@@ -1,15 +1,15 @@
 specVersion: 0.0.3
-description: Bar
-repository: https://github.com/sushiswap/sushiswap-subgraph
+description: Staking
+repository: https://bitbucket.org/coinvestorg/subgraph
 schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum/contract
-    name: SushiBar
+    name: Staking
     network: {{ network }}
     source:
       address: '{{ address }}'
-      abi: Bar
+      abi: Staking
       startBlock: {{ startBlock }}
     mapping:
       kind: ethereum/events
@@ -19,12 +19,12 @@ dataSources:
         - Bar
         - User
       abis:
-        - name: Bar
-          file: ../../node_modules/@sushiswap/core/build/abi/SushiBar.json
-        - name: SushiToken
-          file: ../../node_modules/@sushiswap/core/build/abi/SushiToken.json
-        - name: Pair
-          file: ../../node_modules/@sushiswap/core/build/abi/UniswapV2Pair.json
+        - name: Staking
+          file: ./config/abis/Staking.json
+        - name: MoneyToken
+          file: ./config/abis/MoneyToken.json
+        - name: Core
+          file: ./config/abis/Core.json
       eventHandlers:
         - event: Transfer(indexed address,indexed address,uint256)
           handler: transfer

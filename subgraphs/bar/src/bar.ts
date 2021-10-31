@@ -4,20 +4,20 @@ import {
   BIG_DECIMAL_1E6,
   BIG_DECIMAL_ZERO,
   BIG_INT_ZERO,
-  SUSHI_BAR_ADDRESS,
-  SUSHI_TOKEN_ADDRESS,
-  SUSHI_USDT_PAIR_ADDRESS,
+  MONEY_BAR_ADDRESS,
+  MONEY_TOKEN_ADDRESS,
+  MONEY_USDT_PAIR_ADDRESS
 } from 'const'
 import { Address, BigDecimal, BigInt, dataSource, ethereum, log } from '@graphprotocol/graph-ts'
 import { Bar, History, User } from '../generated/schema'
-import { Bar as BarContract, Transfer as TransferEvent } from '../generated/SushiBar/Bar'
+import { Staking as BarContract, Transfer as TransferEvent } from '../generated/Staking/Staking'
 
-import { Pair as PairContract } from '../generated/SushiBar/Pair'
-import { SushiToken as SushiTokenContract } from '../generated/SushiBar/SushiToken'
+import { Core as PairContract } from '../generated/Staking/Core'
+import { MoneyToken as MoneyTokenContract } from '../generated/Staking/MoneyToken'
 
-// TODO: Get averages of multiple sushi stablecoin pairs
-function getSushiPrice(): BigDecimal {
-  const pair = PairContract.bind(SUSHI_USDT_PAIR_ADDRESS)
+// TODO: Get averages of multiple money stablecoin pairs
+function getMoneyPrice(): BigDecimal {
+  const pair = PairContract.bind(MONEY_USDT_PAIR_ADDRESS)
   const reserves = pair.getReserves()
   return reserves.value1.toBigDecimal().times(BIG_DECIMAL_1E18).div(reserves.value0.toBigDecimal()).div(BIG_DECIMAL_1E6)
 }
@@ -27,17 +27,17 @@ function createBar(block: ethereum.Block): Bar {
   const bar = new Bar(dataSource.address().toHex())
   bar.decimals = contract.decimals()
   bar.name = contract.name()
-  bar.sushi = contract.sushi()
+  bar.money = contract.money()
   bar.symbol = contract.symbol()
   bar.totalSupply = BIG_DECIMAL_ZERO
-  bar.sushiStaked = BIG_DECIMAL_ZERO
-  bar.sushiStakedUSD = BIG_DECIMAL_ZERO
-  bar.sushiHarvested = BIG_DECIMAL_ZERO
-  bar.sushiHarvestedUSD = BIG_DECIMAL_ZERO
-  bar.xSushiMinted = BIG_DECIMAL_ZERO
-  bar.xSushiBurned = BIG_DECIMAL_ZERO
-  bar.xSushiAge = BIG_DECIMAL_ZERO
-  bar.xSushiAgeDestroyed = BIG_DECIMAL_ZERO
+  bar.moneyStaked = BIG_DECIMAL_ZERO
+  bar.moneyStakedUSD = BIG_DECIMAL_ZERO
+  bar.moneyHarvested = BIG_DECIMAL_ZERO
+  bar.moneyHarvestedUSD = BIG_DECIMAL_ZERO
+  bar.xMoneyMinted = BIG_DECIMAL_ZERO
+  bar.xMoneyBurned = BIG_DECIMAL_ZERO
+  bar.xMoneyAge = BIG_DECIMAL_ZERO
+  bar.xMoneyAgeDestroyed = BIG_DECIMAL_ZERO
   bar.ratio = BIG_DECIMAL_ZERO
   bar.updatedAt = block.timestamp
   bar.save()
@@ -61,30 +61,30 @@ function createUser(address: Address, block: ethereum.Block): User {
   // Set relation to bar
   user.bar = dataSource.address().toHex()
 
-  user.xSushi = BIG_DECIMAL_ZERO
-  user.xSushiMinted = BIG_DECIMAL_ZERO
-  user.xSushiBurned = BIG_DECIMAL_ZERO
+  user.xMoney = BIG_DECIMAL_ZERO
+  user.xMoneyMinted = BIG_DECIMAL_ZERO
+  user.xMoneyBurned = BIG_DECIMAL_ZERO
 
-  user.sushiStaked = BIG_DECIMAL_ZERO
-  user.sushiStakedUSD = BIG_DECIMAL_ZERO
+  user.moneyStaked = BIG_DECIMAL_ZERO
+  user.moneyStakedUSD = BIG_DECIMAL_ZERO
 
-  user.sushiHarvested = BIG_DECIMAL_ZERO
-  user.sushiHarvestedUSD = BIG_DECIMAL_ZERO
+  user.moneyHarvested = BIG_DECIMAL_ZERO
+  user.moneyHarvestedUSD = BIG_DECIMAL_ZERO
 
   // In/Out
-  user.xSushiOut = BIG_DECIMAL_ZERO
-  user.sushiOut = BIG_DECIMAL_ZERO
+  user.xMoneyOut = BIG_DECIMAL_ZERO
+  user.moneyOut = BIG_DECIMAL_ZERO
   user.usdOut = BIG_DECIMAL_ZERO
 
-  user.xSushiIn = BIG_DECIMAL_ZERO
-  user.sushiIn = BIG_DECIMAL_ZERO
+  user.xMoneyIn = BIG_DECIMAL_ZERO
+  user.moneyIn = BIG_DECIMAL_ZERO
   user.usdIn = BIG_DECIMAL_ZERO
 
-  user.xSushiAge = BIG_DECIMAL_ZERO
-  user.xSushiAgeDestroyed = BIG_DECIMAL_ZERO
+  user.xMoneyAge = BIG_DECIMAL_ZERO
+  user.xMoneyAgeDestroyed = BIG_DECIMAL_ZERO
 
-  user.xSushiOffset = BIG_DECIMAL_ZERO
-  user.sushiOffset = BIG_DECIMAL_ZERO
+  user.xMoneyOffset = BIG_DECIMAL_ZERO
+  user.moneyOffset = BIG_DECIMAL_ZERO
   user.usdOffset = BIG_DECIMAL_ZERO
   user.updatedAt = block.timestamp
 
@@ -113,15 +113,15 @@ function getHistory(block: ethereum.Block): History {
     history = new History(id)
     history.date = date
     history.timeframe = 'Day'
-    history.sushiStaked = BIG_DECIMAL_ZERO
-    history.sushiStakedUSD = BIG_DECIMAL_ZERO
-    history.sushiHarvested = BIG_DECIMAL_ZERO
-    history.sushiHarvestedUSD = BIG_DECIMAL_ZERO
-    history.xSushiAge = BIG_DECIMAL_ZERO
-    history.xSushiAgeDestroyed = BIG_DECIMAL_ZERO
-    history.xSushiMinted = BIG_DECIMAL_ZERO
-    history.xSushiBurned = BIG_DECIMAL_ZERO
-    history.xSushiSupply = BIG_DECIMAL_ZERO
+    history.moneyStaked = BIG_DECIMAL_ZERO
+    history.moneyStakedUSD = BIG_DECIMAL_ZERO
+    history.moneyHarvested = BIG_DECIMAL_ZERO
+    history.moneyHarvestedUSD = BIG_DECIMAL_ZERO
+    history.xMoneyAge = BIG_DECIMAL_ZERO
+    history.xMoneyAgeDestroyed = BIG_DECIMAL_ZERO
+    history.xMoneyMinted = BIG_DECIMAL_ZERO
+    history.xMoneyBurned = BIG_DECIMAL_ZERO
+    history.xMoneySupply = BIG_DECIMAL_ZERO
     history.ratio = BIG_DECIMAL_ZERO
   }
 
@@ -136,109 +136,109 @@ export function transfer(event: TransferEvent): void {
   if (value.equals(BIG_DECIMAL_ZERO)) {
     log.warning('Transfer zero value! Value: {} Tx: {}', [
       event.params.value.toString(),
-      event.transaction.hash.toHex(),
+      event.transaction.hash.toHex()
     ])
     return
   }
 
   const bar = getBar(event.block)
-  const barContract = BarContract.bind(SUSHI_BAR_ADDRESS)
+  const barContract = BarContract.bind(MONEY_BAR_ADDRESS)
 
-  const sushiPrice = getSushiPrice()
+  const sushiPrice = getMoneyPrice()
 
   bar.totalSupply = barContract.totalSupply().divDecimal(BIG_DECIMAL_1E18)
-  bar.sushiStaked = SushiTokenContract.bind(SUSHI_TOKEN_ADDRESS)
-    .balanceOf(SUSHI_BAR_ADDRESS)
+  bar.moneyStaked = MoneyTokenContract.bind(MONEY_TOKEN_ADDRESS)
+    .balanceOf(MONEY_BAR_ADDRESS)
     .divDecimal(BIG_DECIMAL_1E18)
-  bar.ratio = bar.sushiStaked.div(bar.totalSupply)
+  bar.ratio = bar.moneyStaked.div(bar.totalSupply)
 
   const what = value.times(bar.ratio)
 
-  // Minted xSushi
+  // Minted xMoney
   if (event.params.from == ADDRESS_ZERO) {
     const user = getUser(event.params.to, event.block)
 
-    log.info('{} minted {} xSushi in exchange for {} sushi - sushiStaked before {} sushiStaked after {}', [
+    log.info('{} minted {} xMoney in exchange for {} sushi - moneyStaked before {} moneyStaked after {}', [
       event.params.to.toHex(),
       value.toString(),
       what.toString(),
-      user.sushiStaked.toString(),
-      user.sushiStaked.plus(what).toString(),
+      user.moneyStaked.toString(),
+      user.moneyStaked.plus(what).toString()
     ])
 
-    if (user.xSushi == BIG_DECIMAL_ZERO) {
+    if (user.xMoney == BIG_DECIMAL_ZERO) {
       log.info('{} entered the bar', [user.id])
       user.bar = bar.id
     }
 
-    user.xSushiMinted = user.xSushiMinted.plus(value)
+    user.xMoneyMinted = user.xMoneyMinted.plus(value)
 
-    const sushiStakedUSD = what.times(sushiPrice)
+    const moneyStakedUSD = what.times(sushiPrice)
 
-    user.sushiStaked = user.sushiStaked.plus(what)
-    user.sushiStakedUSD = user.sushiStakedUSD.plus(sushiStakedUSD)
+    user.moneyStaked = user.moneyStaked.plus(what)
+    user.moneyStakedUSD = user.moneyStakedUSD.plus(moneyStakedUSD)
 
     const days = event.block.timestamp.minus(user.updatedAt).divDecimal(BigDecimal.fromString('86400'))
 
-    const xSushiAge = days.times(user.xSushi)
+    const xMoneyAge = days.times(user.xMoney)
 
-    user.xSushiAge = user.xSushiAge.plus(xSushiAge)
+    user.xMoneyAge = user.xMoneyAge.plus(xMoneyAge)
 
     // Update last
-    user.xSushi = user.xSushi.plus(value)
+    user.xMoney = user.xMoney.plus(value)
 
     user.updatedAt = event.block.timestamp
 
     user.save()
 
     const barDays = event.block.timestamp.minus(bar.updatedAt).divDecimal(BigDecimal.fromString('86400'))
-    const barXsushi = bar.xSushiMinted.minus(bar.xSushiBurned)
-    bar.xSushiMinted = bar.xSushiMinted.plus(value)
-    bar.xSushiAge = bar.xSushiAge.plus(barDays.times(barXsushi))
-    bar.sushiStaked = bar.sushiStaked.plus(what)
-    bar.sushiStakedUSD = bar.sushiStakedUSD.plus(sushiStakedUSD)
+    const barXsushi = bar.xMoneyMinted.minus(bar.xMoneyBurned)
+    bar.xMoneyMinted = bar.xMoneyMinted.plus(value)
+    bar.xMoneyAge = bar.xMoneyAge.plus(barDays.times(barXsushi))
+    bar.moneyStaked = bar.moneyStaked.plus(what)
+    bar.moneyStakedUSD = bar.moneyStakedUSD.plus(moneyStakedUSD)
     bar.updatedAt = event.block.timestamp
 
     const history = getHistory(event.block)
-    history.xSushiAge = bar.xSushiAge
-    history.xSushiMinted = history.xSushiMinted.plus(value)
-    history.xSushiSupply = bar.totalSupply
-    history.sushiStaked = history.sushiStaked.plus(what)
-    history.sushiStakedUSD = history.sushiStakedUSD.plus(sushiStakedUSD)
+    history.xMoneyAge = bar.xMoneyAge
+    history.xMoneyMinted = history.xMoneyMinted.plus(value)
+    history.xMoneySupply = bar.totalSupply
+    history.moneyStaked = history.moneyStaked.plus(what)
+    history.moneyStakedUSD = history.moneyStakedUSD.plus(moneyStakedUSD)
     history.ratio = bar.ratio
     history.save()
   }
 
-  // Burned xSushi
+  // Burned xMoney
   if (event.params.to == ADDRESS_ZERO) {
-    log.info('{} burned {} xSushi', [event.params.from.toHex(), value.toString()])
+    log.info('{} burned {} xMoney', [event.params.from.toHex(), value.toString()])
 
     const user = getUser(event.params.from, event.block)
 
-    user.xSushiBurned = user.xSushiBurned.plus(value)
+    user.xMoneyBurned = user.xMoneyBurned.plus(value)
 
-    user.sushiHarvested = user.sushiHarvested.plus(what)
+    user.moneyHarvested = user.moneyHarvested.plus(what)
 
-    const sushiHarvestedUSD = what.times(sushiPrice)
+    const moneyHarvestedUSD = what.times(sushiPrice)
 
-    user.sushiHarvestedUSD = user.sushiHarvestedUSD.plus(sushiHarvestedUSD)
+    user.moneyHarvestedUSD = user.moneyHarvestedUSD.plus(moneyHarvestedUSD)
 
     const days = event.block.timestamp.minus(user.updatedAt).divDecimal(BigDecimal.fromString('86400'))
 
-    const xSushiAge = days.times(user.xSushi)
+    const xMoneyAge = days.times(user.xMoney)
 
-    user.xSushiAge = user.xSushiAge.plus(xSushiAge)
+    user.xMoneyAge = user.xMoneyAge.plus(xMoneyAge)
 
-    const xSushiAgeDestroyed = user.xSushiAge.div(user.xSushi).times(value)
+    const xMoneyAgeDestroyed = user.xMoneyAge.div(user.xMoney).times(value)
 
-    user.xSushiAgeDestroyed = user.xSushiAgeDestroyed.plus(xSushiAgeDestroyed)
+    user.xMoneyAgeDestroyed = user.xMoneyAgeDestroyed.plus(xMoneyAgeDestroyed)
 
-    // remove xSushiAge
-    user.xSushiAge = user.xSushiAge.minus(xSushiAgeDestroyed)
-    // Update xSushi last
-    user.xSushi = user.xSushi.minus(value)
+    // remove xMoneyAge
+    user.xMoneyAge = user.xMoneyAge.minus(xMoneyAgeDestroyed)
+    // Update xMoney last
+    user.xMoney = user.xMoney.minus(value)
 
-    if (user.xSushi == BIG_DECIMAL_ZERO) {
+    if (user.xMoney == BIG_DECIMAL_ZERO) {
       log.info('{} left the bar', [user.id])
       user.bar = null
     }
@@ -248,51 +248,51 @@ export function transfer(event: TransferEvent): void {
     user.save()
 
     const barDays = event.block.timestamp.minus(bar.updatedAt).divDecimal(BigDecimal.fromString('86400'))
-    const barXsushi = bar.xSushiMinted.minus(bar.xSushiBurned)
-    bar.xSushiBurned = bar.xSushiBurned.plus(value)
-    bar.xSushiAge = bar.xSushiAge.plus(barDays.times(barXsushi)).minus(xSushiAgeDestroyed)
-    bar.xSushiAgeDestroyed = bar.xSushiAgeDestroyed.plus(xSushiAgeDestroyed)
-    bar.sushiHarvested = bar.sushiHarvested.plus(what)
-    bar.sushiHarvestedUSD = bar.sushiHarvestedUSD.plus(sushiHarvestedUSD)
+    const barXsushi = bar.xMoneyMinted.minus(bar.xMoneyBurned)
+    bar.xMoneyBurned = bar.xMoneyBurned.plus(value)
+    bar.xMoneyAge = bar.xMoneyAge.plus(barDays.times(barXsushi)).minus(xMoneyAgeDestroyed)
+    bar.xMoneyAgeDestroyed = bar.xMoneyAgeDestroyed.plus(xMoneyAgeDestroyed)
+    bar.moneyHarvested = bar.moneyHarvested.plus(what)
+    bar.moneyHarvestedUSD = bar.moneyHarvestedUSD.plus(moneyHarvestedUSD)
     bar.updatedAt = event.block.timestamp
 
     const history = getHistory(event.block)
-    history.xSushiSupply = bar.totalSupply
-    history.xSushiBurned = history.xSushiBurned.plus(value)
-    history.xSushiAge = bar.xSushiAge
-    history.xSushiAgeDestroyed = history.xSushiAgeDestroyed.plus(xSushiAgeDestroyed)
-    history.sushiHarvested = history.sushiHarvested.plus(what)
-    history.sushiHarvestedUSD = history.sushiHarvestedUSD.plus(sushiHarvestedUSD)
+    history.xMoneySupply = bar.totalSupply
+    history.xMoneyBurned = history.xMoneyBurned.plus(value)
+    history.xMoneyAge = bar.xMoneyAge
+    history.xMoneyAgeDestroyed = history.xMoneyAgeDestroyed.plus(xMoneyAgeDestroyed)
+    history.moneyHarvested = history.moneyHarvested.plus(what)
+    history.moneyHarvestedUSD = history.moneyHarvestedUSD.plus(moneyHarvestedUSD)
     history.ratio = bar.ratio
     history.save()
   }
 
-  // If transfer from address to address and not known xSushi pools.
+  // If transfer from address to address and not known xMoney pools.
   if (event.params.from != ADDRESS_ZERO && event.params.to != ADDRESS_ZERO) {
-    log.info('transfered {} xSushi from {} to {}', [
+    log.info('transfered {} xMoney from {} to {}', [
       value.toString(),
       event.params.from.toHex(),
-      event.params.to.toHex(),
+      event.params.to.toHex()
     ])
 
     const fromUser = getUser(event.params.from, event.block)
 
     const fromUserDays = event.block.timestamp.minus(fromUser.updatedAt).divDecimal(BigDecimal.fromString('86400'))
 
-    // Recalc xSushi age first
-    fromUser.xSushiAge = fromUser.xSushiAge.plus(fromUserDays.times(fromUser.xSushi))
-    // Calculate xSushiAge being transfered
-    const xSushiAgeTranfered = fromUser.xSushiAge.div(fromUser.xSushi).times(value)
-    // Subtract from xSushiAge
-    fromUser.xSushiAge = fromUser.xSushiAge.minus(xSushiAgeTranfered)
+    // Recalc xMoney age first
+    fromUser.xMoneyAge = fromUser.xMoneyAge.plus(fromUserDays.times(fromUser.xMoney))
+    // Calculate xMoneyAge being transfered
+    const xMoneyAgeTranfered = fromUser.xMoneyAge.div(fromUser.xMoney).times(value)
+    // Subtract from xMoneyAge
+    fromUser.xMoneyAge = fromUser.xMoneyAge.minus(xMoneyAgeTranfered)
     fromUser.updatedAt = event.block.timestamp
 
-    fromUser.xSushi = fromUser.xSushi.minus(value)
-    fromUser.xSushiOut = fromUser.xSushiOut.plus(value)
-    fromUser.sushiOut = fromUser.sushiOut.plus(what)
+    fromUser.xMoney = fromUser.xMoney.minus(value)
+    fromUser.xMoneyOut = fromUser.xMoneyOut.plus(value)
+    fromUser.moneyOut = fromUser.moneyOut.plus(what)
     fromUser.usdOut = fromUser.usdOut.plus(what.times(sushiPrice))
 
-    if (fromUser.xSushi == BIG_DECIMAL_ZERO) {
+    if (fromUser.xMoney == BIG_DECIMAL_ZERO) {
       log.info('{} left the bar by transfer OUT', [fromUser.id])
       fromUser.bar = null
     }
@@ -306,37 +306,37 @@ export function transfer(event: TransferEvent): void {
       toUser.bar = bar.id
     }
 
-    // Recalculate xSushi age and add incoming xSushiAgeTransfered
+    // Recalculate xMoney age and add incoming xMoneyAgeTransfered
     const toUserDays = event.block.timestamp.minus(toUser.updatedAt).divDecimal(BigDecimal.fromString('86400'))
 
-    toUser.xSushiAge = toUser.xSushiAge.plus(toUserDays.times(toUser.xSushi)).plus(xSushiAgeTranfered)
+    toUser.xMoneyAge = toUser.xMoneyAge.plus(toUserDays.times(toUser.xMoney)).plus(xMoneyAgeTranfered)
     toUser.updatedAt = event.block.timestamp
 
-    toUser.xSushi = toUser.xSushi.plus(value)
-    toUser.xSushiIn = toUser.xSushiIn.plus(value)
-    toUser.sushiIn = toUser.sushiIn.plus(what)
+    toUser.xMoney = toUser.xMoney.plus(value)
+    toUser.xMoneyIn = toUser.xMoneyIn.plus(value)
+    toUser.moneyIn = toUser.moneyIn.plus(what)
     toUser.usdIn = toUser.usdIn.plus(what.times(sushiPrice))
 
-    const difference = toUser.xSushiIn.minus(toUser.xSushiOut).minus(toUser.xSushiOffset)
+    const difference = toUser.xMoneyIn.minus(toUser.xMoneyOut).minus(toUser.xMoneyOffset)
 
     // If difference of sushi in - sushi out - offset > 0, then add on the difference
-    // in staked sushi based on xSushi:Sushi ratio at time of reciept.
+    // in staked sushi based on xMoney:Sushi ratio at time of reciept.
     if (difference.gt(BIG_DECIMAL_ZERO)) {
-      const sushi = toUser.sushiIn.minus(toUser.sushiOut).minus(toUser.sushiOffset)
+      const sushi = toUser.moneyIn.minus(toUser.moneyOut).minus(toUser.moneyOffset)
       const usd = toUser.usdIn.minus(toUser.usdOut).minus(toUser.usdOffset)
 
-      log.info('{} recieved a transfer of {} xSushi from {}, sushi value of transfer is {}', [
+      log.info('{} recieved a transfer of {} xMoney from {}, sushi value of transfer is {}', [
         toUser.id,
         value.toString(),
         fromUser.id,
-        what.toString(),
+        what.toString()
       ])
 
-      toUser.sushiStaked = toUser.sushiStaked.plus(sushi)
-      toUser.sushiStakedUSD = toUser.sushiStakedUSD.plus(usd)
+      toUser.moneyStaked = toUser.moneyStaked.plus(sushi)
+      toUser.moneyStakedUSD = toUser.moneyStakedUSD.plus(usd)
 
-      toUser.xSushiOffset = toUser.xSushiOffset.plus(difference)
-      toUser.sushiOffset = toUser.sushiOffset.plus(sushi)
+      toUser.xMoneyOffset = toUser.xMoneyOffset.plus(difference)
+      toUser.moneyOffset = toUser.moneyOffset.plus(sushi)
       toUser.usdOffset = toUser.usdOffset.plus(usd)
     }
 
