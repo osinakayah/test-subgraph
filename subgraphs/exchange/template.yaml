@@ -1,6 +1,6 @@
 specVersion: 0.0.3
 description: Exchange
-repository: https://github.com/sushiswap/sushiswap-subgraph
+repository: https://bitbucket.org/coinvestorg/subgraph
 schema:
   file: ./schema.graphql
 dataSources:
@@ -20,26 +20,26 @@ dataSources:
         - Factory
       abis:
         - name: Factory
-          file: ../../node_modules/@sushiswap/core/build/abi/UniswapV2Factory.json
-        - name: Pair
-          file: ../../node_modules/@sushiswap/core/build/abi/UniswapV2Pair.json
-        - name: SushiToken
-          file: ../../node_modules/@sushiswap/core/build/abi/SushiToken.json
+          file: ./packages/abis/Factory.json
+        - name: Core
+          file: ./packages/abis/Core.json
+        - name: MoneyToken
+          file: ./packages/abis/MoneyToken.json
         - name: ERC20
-          file: ../../node_modules/@sushiswap/core/build/abi/ERC20.json
+          file: ./packages/abis/ERC20.json
         - name: ERC20SymbolBytes
-          file: ../../packages/abis/ERC20SymbolBytes.json
+          file: ./packages/abis/ERC20SymbolBytes.json
         - name: ERC20NameBytes
-          file: ../../packages/abis/ERC20NameBytes.json
+          file: ./packages/abis/ERC20NameBytes.json
       eventHandlers:
         - event: PairCreated(indexed address,indexed address,address,uint256)
           handler: onPairCreated
 templates:
   - kind: ethereum/contract
-    name: Pair
+    name: Core
     network: {{ network }}
     source:
-      abi: Pair
+      abi: Core
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -58,10 +58,10 @@ templates:
         - Transaction
         - User
       abis:
-        - name: Pair
-          file: ../../node_modules/@sushiswap/core/build/abi/UniswapV2Pair.json
+        - name: Core
+          file: ./packages/abis/Core.json
         - name: Factory
-          file: ../../node_modules/@sushiswap/core/build/abi/UniswapV2Factory.json
+          file: ./packages/abis/Factory.json
       eventHandlers:
         - event: Mint(indexed address,uint256,uint256)
           handler: onMint

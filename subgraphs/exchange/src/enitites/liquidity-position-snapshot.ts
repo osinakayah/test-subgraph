@@ -2,7 +2,7 @@ import { Address, ethereum } from '@graphprotocol/graph-ts'
 import { LiquidityPosition, LiquidityPositionSnapshot, Pair, Token } from '../../generated/schema'
 import { getBundle, getPair, getToken } from '.'
 
-import { Pair as PairContract } from '../../generated/templates/Pair/Pair'
+import { Core as PairContract } from '../../generated/templates/Core/Core'
 
 export function createLiquidityPositionSnapshot(position: LiquidityPosition, block: ethereum.Block): void {
   const timestamp = block.timestamp.toI32()

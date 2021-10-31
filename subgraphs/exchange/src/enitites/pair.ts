@@ -2,7 +2,7 @@ import { Address, ethereum } from '@graphprotocol/graph-ts'
 import { BIG_DECIMAL_ZERO, BIG_INT_ZERO, FACTORY_ADDRESS, WHITELIST } from 'const'
 
 import { Pair } from '../../generated/schema'
-import { Pair as PairContract } from '../../generated/templates/Pair/Pair'
+import { Core as PairContract } from '../../generated/templates/Core/Core'
 import { getToken } from '.'
 
 export function getPair(

@@ -13,13 +13,13 @@ import {
   USDC_WETH_PAIR,
   USDT,
   USDT_WETH_PAIR,
-  WHITELIST,
+  WHITELIST
 } from 'const'
 import { Address, BigDecimal, BigInt, dataSource, ethereum, log } from '@graphprotocol/graph-ts'
 import { Pair, Token } from '../generated/schema'
 
-import { Factory as FactoryContract } from '../generated/templates/Pair/Factory'
-import { Pair as PairContract } from '../generated/templates/Pair/Pair'
+import { Factory as FactoryContract } from '../generated/templates/Core/Factory'
+import { Core as PairContract } from '../generated/templates/Core/Core'
 
 // export const uniswapFactoryContract = FactoryContract.bind(Address.fromString("0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f"))
 

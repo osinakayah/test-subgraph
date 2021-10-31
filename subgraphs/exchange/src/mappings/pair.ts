@@ -4,11 +4,11 @@ import { Burn, Mint, Pair, Swap, Token, Transaction } from '../../generated/sche
 import {
   Burn as BurnEvent,
   Mint as MintEvent,
-  Pair as PairContract,
+  Core as PairContract,
   Swap as SwapEvent,
   Sync as SyncEvent,
   Transfer as TransferEvent,
-} from '../../generated/templates/Pair/Pair'
+} from '../../generated/templates/Core/Core'
 import {
   createLiquidityPosition,
   createLiquidityPositionSnapshot,
