@@ -4,28 +4,28 @@ type MasterChef @entity {
   id: ID!
 
   # Bonus multiplier
-  bonusMultiplier: BigInt!
+#  bonusMultiplier: BigInt!
 
   # Bonus end block
-  bonusEndBlock: BigInt!
+#  bonusEndBlock: BigInt!
 
   # Dev fund address
   devaddr: Bytes!
 
   # Migrator
-  migrator: Bytes!
+#  migrator: Bytes!
 
   # Owner
   owner: Bytes!
 
   # Start block
-  startBlock: BigInt!
+#  startBlock: BigInt!
 
   # Money
   money: Bytes!
 
   # Money per block
-  moneyPerBlock: BigInt!
+#  moneyPerBlock: BigInt!
 
   # Total allocation point
   totalAllocPoint: BigInt!

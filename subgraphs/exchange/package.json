@@ -12,7 +12,6 @@
         "create-local": "graph create --node http://localhost:8020/ /sushiswap/sushiswap",
         "remove-local": "graph remove --node http://localhost:8020/ /sushiswap/sushiswap",
         "deploy-local": "graph deploy --node http://localhost:8020/ /sushiswap/sushiswap",
-        "deploy": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ ameesha1205/hodl-staging ./subgraph.yaml --access-token 4d38be3fb7ed42519c9ceede745815e6",
         "deploy:mainnet": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ sushiswap/exchange subgraph.yaml",
         "deploy:fantom": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ sushiswap/fantom-exchange subgraph.yaml",
         "deploy:xdai": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ sushiswap/xdai-exchange subgraph.yaml",
@@ -40,6 +39,7 @@
         "prepare:avalanche": "mustache ../../config/avalanche.json template.yaml > subgraph.yaml",
         "prepare:palm": "mustache ../../config/palm.json template.yaml > subgraph.yaml",
         "prepare:heco": "mustache ../../config/heco.json template.yaml > subgraph.yaml",
-        "prepare:fuse": "mustache ../../config/fuse.json template.yaml > subgraph.yaml"
+        "prepare:fuse": "mustache ../../config/fuse.json template.yaml > subgraph.yaml",
+        "deploy": "graph deploy --node https://api.thegraph.com/deploy/ osinakayah/exchange"
     }
 }

@@ -59,13 +59,13 @@ export const FACTORY_ADDRESS = Address.fromString(
 )
 
 export const FARMING_ADDRESS = Address.fromString(
-  '0x0000000000000000000000000000000000000000'
+  '0xb8d496c4b8d2E3b2Fd44FFFe8D6dEd42F2C1833B'
 )
 
-export const MASTER_CHEF_V2_ADDRESS = Address.fromString('0xef0881ec094552b2e128cf945ef17a6752b4ec5d')
+export const MASTER_CHEF_V2_ADDRESS = Address.fromString('0xb8d496c4b8d2E3b2Fd44FFFe8D6dEd42F2C1833B')
 
 export const MONEY_BAR_ADDRESS = Address.fromString(
-  '0x0000000000000000000000000000000000000000'
+  '0x154B6B7891B797f991B15B2c7BBD89D3bDeDCeAA'
 )
 
 export const MONEY_MAKER_ADDRESS = Address.fromString(
@@ -73,7 +73,7 @@ export const MONEY_MAKER_ADDRESS = Address.fromString(
 )
 
 export const MONEY_TOKEN_ADDRESS = Address.fromString(
-  '0x0000000000000000000000000000000000000000'
+  '0xD224DC5E2005c315A944a4f9635dbecC4FE2C451'
 )
 
 export const MONEY_USDT_PAIR_ADDRESS = Address.fromString(
