@@ -1,7 +1,7 @@
 {
   "network": "ropsten",
   "factory_address": "0x96F3aD81A8F1C688465F4818feEc33e483f821AE",
-  "farming_address": "0x39C8aFe0946181CAA665584182D62eB820fa8714",
+  "farming_address": "0x48fc14beFFf0eAE7A891db95c72919c0fdEc730d",
   "staking_address": "0xef67239950364B22e6474a5bBE9cc075C4026C82",
   "money_address": "0xD224DC5E2005c315A944a4f9635dbecC4FE2C451",
   "weth_address": "0xc778417E063141139Fce010982780140Aa0cD5Ab",

@@ -144,7 +144,7 @@ export function transfer(event: TransferEvent): void {
   const bar = getBar(event.block)
   const barContract = BarContract.bind(MONEY_BAR_ADDRESS)
 
-  const sushiPrice = getMoneyPrice()
+  const moneyPrice = getMoneyPrice()
 
   bar.totalSupply = barContract.totalSupply().divDecimal(BIG_DECIMAL_1E18)
   bar.moneyStaked = MoneyTokenContract.bind(MONEY_TOKEN_ADDRESS)
@@ -158,7 +158,7 @@ export function transfer(event: TransferEvent): void {
   if (event.params.from == ADDRESS_ZERO) {
     const user = getUser(event.params.to, event.block)
 
-    log.info('{} minted {} xMoney in exchange for {} sushi - moneyStaked before {} moneyStaked after {}', [
+    log.info('{} minted {} xMoney in exchange for {} money - moneyStaked before {} moneyStaked after {}', [
       event.params.to.toHex(),
       value.toString(),
       what.toString(),
@@ -173,7 +173,7 @@ export function transfer(event: TransferEvent): void {
 
     user.xMoneyMinted = user.xMoneyMinted.plus(value)
 
-    const moneyStakedUSD = what.times(sushiPrice)
+    const moneyStakedUSD = what.times(moneyPrice)
 
     user.moneyStaked = user.moneyStaked.plus(what)
     user.moneyStakedUSD = user.moneyStakedUSD.plus(moneyStakedUSD)
@@ -192,9 +192,9 @@ export function transfer(event: TransferEvent): void {
     user.save()
 
     const barDays = event.block.timestamp.minus(bar.updatedAt).divDecimal(BigDecimal.fromString('86400'))
-    const barXsushi = bar.xMoneyMinted.minus(bar.xMoneyBurned)
+    const barXmoney = bar.xMoneyMinted.minus(bar.xMoneyBurned)
     bar.xMoneyMinted = bar.xMoneyMinted.plus(value)
-    bar.xMoneyAge = bar.xMoneyAge.plus(barDays.times(barXsushi))
+    bar.xMoneyAge = bar.xMoneyAge.plus(barDays.times(barXmoney))
     bar.moneyStaked = bar.moneyStaked.plus(what)
     bar.moneyStakedUSD = bar.moneyStakedUSD.plus(moneyStakedUSD)
     bar.updatedAt = event.block.timestamp
@@ -219,7 +219,7 @@ export function transfer(event: TransferEvent): void {
 
     user.moneyHarvested = user.moneyHarvested.plus(what)
 
-    const moneyHarvestedUSD = what.times(sushiPrice)
+    const moneyHarvestedUSD = what.times(moneyPrice)
 
     user.moneyHarvestedUSD = user.moneyHarvestedUSD.plus(moneyHarvestedUSD)
 
@@ -248,9 +248,9 @@ export function transfer(event: TransferEvent): void {
     user.save()
 
     const barDays = event.block.timestamp.minus(bar.updatedAt).divDecimal(BigDecimal.fromString('86400'))
-    const barXsushi = bar.xMoneyMinted.minus(bar.xMoneyBurned)
+    const barXmoney = bar.xMoneyMinted.minus(bar.xMoneyBurned)
     bar.xMoneyBurned = bar.xMoneyBurned.plus(value)
-    bar.xMoneyAge = bar.xMoneyAge.plus(barDays.times(barXsushi)).minus(xMoneyAgeDestroyed)
+    bar.xMoneyAge = bar.xMoneyAge.plus(barDays.times(barXmoney)).minus(xMoneyAgeDestroyed)
     bar.xMoneyAgeDestroyed = bar.xMoneyAgeDestroyed.plus(xMoneyAgeDestroyed)
     bar.moneyHarvested = bar.moneyHarvested.plus(what)
     bar.moneyHarvestedUSD = bar.moneyHarvestedUSD.plus(moneyHarvestedUSD)
@@ -290,7 +290,7 @@ export function transfer(event: TransferEvent): void {
     fromUser.xMoney = fromUser.xMoney.minus(value)
     fromUser.xMoneyOut = fromUser.xMoneyOut.plus(value)
     fromUser.moneyOut = fromUser.moneyOut.plus(what)
-    fromUser.usdOut = fromUser.usdOut.plus(what.times(sushiPrice))
+    fromUser.usdOut = fromUser.usdOut.plus(what.times(moneyPrice))
 
     if (fromUser.xMoney == BIG_DECIMAL_ZERO) {
       log.info('{} left the bar by transfer OUT', [fromUser.id])
@@ -315,28 +315,28 @@ export function transfer(event: TransferEvent): void {
     toUser.xMoney = toUser.xMoney.plus(value)
     toUser.xMoneyIn = toUser.xMoneyIn.plus(value)
     toUser.moneyIn = toUser.moneyIn.plus(what)
-    toUser.usdIn = toUser.usdIn.plus(what.times(sushiPrice))
+    toUser.usdIn = toUser.usdIn.plus(what.times(moneyPrice))
 
     const difference = toUser.xMoneyIn.minus(toUser.xMoneyOut).minus(toUser.xMoneyOffset)
 
-    // If difference of sushi in - sushi out - offset > 0, then add on the difference
-    // in staked sushi based on xMoney:Sushi ratio at time of reciept.
+    // If difference of money in - money out - offset > 0, then add on the difference
+    // in staked money based on xMoney:Money ratio at time of reciept.
     if (difference.gt(BIG_DECIMAL_ZERO)) {
-      const sushi = toUser.moneyIn.minus(toUser.moneyOut).minus(toUser.moneyOffset)
+      const money = toUser.moneyIn.minus(toUser.moneyOut).minus(toUser.moneyOffset)
       const usd = toUser.usdIn.minus(toUser.usdOut).minus(toUser.usdOffset)
 
-      log.info('{} recieved a transfer of {} xMoney from {}, sushi value of transfer is {}', [
+      log.info('{} recieved a transfer of {} xMoney from {}, money value of transfer is {}', [
         toUser.id,
         value.toString(),
         fromUser.id,
         what.toString()
       ])
 
-      toUser.moneyStaked = toUser.moneyStaked.plus(sushi)
+      toUser.moneyStaked = toUser.moneyStaked.plus(money)
       toUser.moneyStakedUSD = toUser.moneyStakedUSD.plus(usd)
 
       toUser.xMoneyOffset = toUser.xMoneyOffset.plus(difference)
-      toUser.moneyOffset = toUser.moneyOffset.plus(sushi)
+      toUser.moneyOffset = toUser.moneyOffset.plus(money)
       toUser.usdOffset = toUser.usdOffset.plus(usd)
     }
 

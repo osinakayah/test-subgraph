@@ -77,7 +77,7 @@ export const MONEY_TOKEN_ADDRESS = Address.fromString(
 )
 
 export const MONEY_USDT_PAIR_ADDRESS = Address.fromString(
-  '{{ money_usdt_pair_address }}{{^money_usdt_pair_address}}0x0000000000000000000000000000000000000000{{/money_usdt_pair_address}}'
+  '{{ money_usdt_pair_address }}{{^money_usdt_pair_address}}0x9663597e8b101dd58ebe9dce9de722aec54b44c3{{/money_usdt_pair_address}}'
 )
 
 export const XMONEY_USDC_PAIR_ADDRESS = Address.fromString(
