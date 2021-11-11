@@ -5,6 +5,11 @@
         "internalType": "address",
         "name": "_money",
         "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_reserve",
+        "type": "address"
       }
     ],
     "stateMutability": "nonpayable",
@@ -90,6 +95,19 @@
       }
     ],
     "name": "Transfer",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "_reserveDistributionSchedule",
+        "type": "uint256"
+      }
+    ],
+    "name": "UpdatedReserveDistributionSchedule",
     "type": "event"
   },
   {
@@ -241,6 +259,19 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "lastReserveDistributionTimestamp",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "uint256",
@@ -307,6 +338,19 @@
         "internalType": "contract IReserve",
         "name": "",
         "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "reserveDistributionSchedule",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -413,6 +457,19 @@
       }
     ],
     "name": "transferOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_reserveDistributionSchedule",
+        "type": "uint256"
+      }
+    ],
+    "name": "updateReserveDistributionSchedule",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

@@ -303,6 +303,25 @@
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_pid",
+        "type": "uint256"
+      }
+    ],
+    "name": "getCurrentRoundId",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "depositForRound",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "globalRoundId",
     "outputs": [
@@ -365,6 +384,30 @@
     "inputs": [
       {
         "internalType": "uint256",
+        "name": "_pid",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "_user",
+        "type": "address"
+      }
+    ],
+    "name": "pendingMoney",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "pending",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
         "name": "",
         "type": "uint256"
       }
@@ -392,11 +435,6 @@
         "type": "uint256"
       },
       {
-        "internalType": "uint256",
-        "name": "lastRewardRound",
-        "type": "uint256"
-      },
-      {
         "internalType": "uint16",
         "name": "depositFeeBP",
         "type": "uint16"
@@ -416,6 +454,19 @@
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "pullRewards",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "rewardAccumulated",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
