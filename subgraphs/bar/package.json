@@ -17,6 +17,7 @@
         "prepare:mainnet": "mustache config/mainnet.json template.yaml > subgraph.yaml",
         "prepare:rinkeby": "mustache config/rinkeby.json template.yaml > subgraph.yaml",
         "prepare:ropsten": "mustache config/ropsten.json template.yaml > subgraph.yaml",
-        "deploy": "graph deploy --node https://api.thegraph.com/deploy/ osinakayah/bar"
+        "deploy": "graph deploy --node https://api.thegraph.com/deploy/ osinakayah/bar",
+        "all-deploy": "yarn prepare:ropsten && yarn codegen && yarn build && yarn deploy"
     }
 }

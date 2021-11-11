@@ -1,15 +1,15 @@
 {
   "network": "ropsten",
   "factory_address": "0x96F3aD81A8F1C688465F4818feEc33e483f821AE",
-  "farming_address": "0x730003030a0e3ef7aD8A061412b4ea06e1157Cc4",
-  "staking_address": "0xF7CEf91402C061F955fCd35bAc69753917994C9C",
+  "farming_address": "0x39C8aFe0946181CAA665584182D62eB820fa8714",
+  "staking_address": "0xef67239950364B22e6474a5bBE9cc075C4026C82",
   "money_address": "0xD224DC5E2005c315A944a4f9635dbecC4FE2C451",
-  "weth_address": "0xc778417e063141139fce010982780140aa0cd5ab",
+  "weth_address": "0xc778417E063141139Fce010982780140Aa0cD5Ab",
   "uniswap_factory_address": "0x5c69bee701ef814a2b6a3edd4b1652cb9cc5aa6f",
   "minimum_usd_threshold_new_pairs": "3000",
   "minimum_liquidity_threshold_eth": "1",
   "factory": {
     "address": "0x96F3aD81A8F1C688465F4818feEc33e483f821AE",
-    "startBlock": "9731346"
+    "startBlock": "11305165"
   }
 }
