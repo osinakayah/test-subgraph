@@ -59,37 +59,37 @@ export const FACTORY_ADDRESS = Address.fromString(
 )
 
 export const FARMING_ADDRESS = Address.fromString(
-  '{{ masterchef_address }}{{^masterchef_address}}0x0000000000000000000000000000000000000000{{/masterchef_address}}'
+  '{{ farming_address }}{{^farming_address}}0x0000000000000000000000000000000000000000{{/farming_address}}'
 )
 
 export const MASTER_CHEF_V2_ADDRESS = Address.fromString('0xef0881ec094552b2e128cf945ef17a6752b4ec5d')
 
 export const MONEY_BAR_ADDRESS = Address.fromString(
-  '{{ sushi_bar_address }}{{^sushi_bar_address}}0x0000000000000000000000000000000000000000{{/sushi_bar_address}}'
+  '{{ staking_address }}{{^staking_address}}0x0000000000000000000000000000000000000000{{/staking_address}}'
 )
 
 export const MONEY_MAKER_ADDRESS = Address.fromString(
-  '{{ sushi_maker_address }}{{^sushi_maker_address}}0x0000000000000000000000000000000000000000{{/sushi_maker_address}}'
+  '{{ money_maker_address }}{{^money_maker_address}}0x0000000000000000000000000000000000000000{{/money_maker_address}}'
 )
 
 export const MONEY_TOKEN_ADDRESS = Address.fromString(
-  '{{ sushi_address }}{{^sushi_address}}0x0000000000000000000000000000000000000000{{/sushi_address}}'
+  '{{ money_address }}{{^money_address}}0x0000000000000000000000000000000000000000{{/money_address}}'
 )
 
 export const MONEY_USDT_PAIR_ADDRESS = Address.fromString(
-  '{{ sushi_usdt_pair_address }}{{^sushi_usdt_pair_address}}0x0000000000000000000000000000000000000000{{/sushi_usdt_pair_address}}'
+  '{{ money_usdt_pair_address }}{{^money_usdt_pair_address}}0x0000000000000000000000000000000000000000{{/money_usdt_pair_address}}'
 )
 
 export const XMONEY_USDC_PAIR_ADDRESS = Address.fromString(
-  '{{ xsushi_usdc_pair_address }}{{^xsushi_usdc_pair_address}}0x0000000000000000000000000000000000000000{{/xsushi_usdc_pair_address}}'
+  '{{ xmoney_usdc_pair_address }}{{^xmoney_usdc_pair_address}}0x0000000000000000000000000000000000000000{{/xmoney_usdc_pair_address}}'
 )
 
 export const XMONEY_WETH_PAIR_ADDRESS = Address.fromString(
-  '{{ xsushi_weth_pair_address }}{{^xsushi_weth_pair_address}}0x0000000000000000000000000000000000000000{{/xsushi_weth_pair_address}}'
+  '{{ xmoney_weth_pair_address }}{{^xmoney_weth_pair_address}}0x0000000000000000000000000000000000000000{{/xmoney_weth_pair_address}}'
 )
 
 export const MONEY_DISTRIBUTOR_ADDRESS = Address.fromString(
-  '{{ sushi_distributor_address }}{{^sushi_distributor_address}}0x0000000000000000000000000000000000000000{{/sushi_distributor_address}}'
+  '{{ money_distributor_address }}{{^money_distributor_address}}0x0000000000000000000000000000000000000000{{/money_distributor_address}}'
 )
 
 export const USDC_WETH_PAIR =
@@ -102,7 +102,7 @@ export const USDT_WETH_PAIR =
   '{{ usdt_weth_pair }}{{^usdt_weth_pair}}0x0000000000000000000000000000000000000000{{/usdt_weth_pair}}'
 
 export const MONEY_USDT_PAIR =
-  '{{ sushi_usdt_pair }}{{^sushi_usdt_pair}}0x0000000000000000000000000000000000000000{{/sushi_usdt_pair}}'
+  '{{ money_usdt_pair }}{{^money_usdt_pair}}0x0000000000000000000000000000000000000000{{/money_usdt_pair}}'
 
 // minimum liquidity required to count towards tracked volume for pairs with small # of Lps
 export const MINIMUM_USD_THRESHOLD_NEW_PAIRS = BigDecimal.fromString(
@@ -117,7 +117,7 @@ export const WETH_ADDRESS = Address.fromString(
 )
 
 export const HODL_WETH_USDT_PAIR_ADDRESS = Address.fromString(
-  '{{ sushiswap_weth_usdt_pair_address }}{{^sushiswap_weth_usdt_pair_address}}0x0000000000000000000000000000000000000000{{/sushiswap_weth_usdt_pair_address}}'
+  '{{ hodl_weth_usdt_pair_address }}{{^hodl_weth_usdt_pair_address}}0x0000000000000000000000000000000000000000{{/hodl_weth_usdt_pair_address}}'
 )
 
 export const USDT_ADDRESS = Address.fromString(
@@ -133,11 +133,11 @@ export const UNISWAP_WETH_USDT_PAIR_ADDRESS = Address.fromString(
 )
 
 export const UNISWAP_MONEY_ETH_PAIR_ADDRESS = Address.fromString(
-  '{{ uniswap_sushi_eth_pair_address }}{{^uniswap_sushi_eth_pair_address}}0x0000000000000000000000000000000000000000{{/uniswap_sushi_eth_pair_address}}'
+  '{{ uniswap_money_eth_pair_address }}{{^uniswap_money_eth_pair_address}}0x0000000000000000000000000000000000000000{{/uniswap_money_eth_pair_address}}'
 )
 
 export const UNISWAP_MONEY_USDT_PAIR_ADDRESS = Address.fromString(
-  '{{ uniswap_sushi_usdt_pair_address }}{{^uniswap_sushi_usdt_pair_address}}0x0000000000000000000000000000000000000000{{/uniswap_sushi_usdt_pair_address}}'
+  '{{ uniswap_money_usdt_pair_address }}{{^uniswap_money_usdt_pair_address}}0x0000000000000000000000000000000000000000{{/uniswap_money_usdt_pair_address}}'
 )
 
 // Bentobox constants
