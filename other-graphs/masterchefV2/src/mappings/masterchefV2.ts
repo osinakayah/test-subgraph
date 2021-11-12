@@ -105,7 +105,7 @@ export function deposit(event: Deposit): void {
   const pool = getPool(event.params.pid, event.block)
   const user = getUser(event.params.to, event.params.pid, event.block)
 
-  pool.slpBalance = pool.slpBalance.plus(event.params.amount)
+  pool.hvlpBalance = pool.hvlpBalance.plus(event.params.amount)
   pool.save()
 
   user.amount = user.amount.plus(event.params.amount)
@@ -125,7 +125,7 @@ export function withdraw(event: Withdraw): void {
   const pool = getPool(event.params.pid, event.block)
   const user = getUser(event.params.user, event.params.pid, event.block)
 
-  pool.slpBalance = pool.slpBalance.minus(event.params.amount)
+  pool.hvlpBalance = pool.hvlpBalance.minus(event.params.amount)
   pool.save()
 
   user.amount = user.amount.minus(event.params.amount)

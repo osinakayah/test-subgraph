@@ -29,7 +29,7 @@ type Pool @entity {
   lastRewardBlock: BigInt!
   accSushiPerShare: BigInt!
 
-  slpBalance: BigInt!
+  hvlpBalance: BigInt!
 
   users: [User!]! @derivedFrom(field: "pool")
   userCount: BigInt!

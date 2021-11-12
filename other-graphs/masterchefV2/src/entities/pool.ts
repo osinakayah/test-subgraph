@@ -15,7 +15,7 @@ export function getPool(pid: BigInt, block: ethereum.Block): Pool {
     pool.allocPoint = BIG_INT_ZERO
     pool.lastRewardBlock = BIG_INT_ZERO
     pool.accSushiPerShare = BIG_INT_ZERO
-    pool.slpBalance = BIG_INT_ZERO
+    pool.hvlpBalance = BIG_INT_ZERO
     pool.userCount = BIG_INT_ZERO
   }
 
