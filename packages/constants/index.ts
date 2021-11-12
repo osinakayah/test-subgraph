@@ -59,7 +59,7 @@ export const FACTORY_ADDRESS = Address.fromString(
 )
 
 export const FARMING_ADDRESS = Address.fromString(
-  '0x48fc14beFFf0eAE7A891db95c72919c0fdEc730d'
+  '0x073cD67447A9bE935F415Bb7454F73908910811E'
 )
 
 export const MASTER_CHEF_V2_ADDRESS = Address.fromString('0xef0881ec094552b2e128cf945ef17a6752b4ec5d')
