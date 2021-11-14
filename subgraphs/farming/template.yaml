@@ -32,11 +32,11 @@ dataSources:
         - name: ERC20
           file: ./config/abis/ERC20.json
       eventHandlers:
-        - event: Deposit(indexed address,indexed uint256,uint256)
+        - event: Deposit(indexed address,indexed uint256,uint256,uint256,uint256)
           handler: deposit
         - event: OwnershipTransferred(indexed address,indexed address)
           handler: ownershipTransferred
-        - event: Withdraw(indexed address,indexed uint256,uint256)
+        - event: Withdraw(indexed address,indexed uint256,uint256,uint256,uint256)
           handler: withdraw
       callHandlers:
         - function: add(uint256,address,uint16)
@@ -57,4 +57,6 @@ dataSources:
           handler: setFeeAddress
         - function: updateReserveDistributionSchedule(uint256)
           handler: updateReserveDistributionSchedule
+        - function: pullRewards()
+          handler: pullRewards
       file: ./src/farming.ts
