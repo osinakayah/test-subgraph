@@ -22,7 +22,7 @@ type Farming @entity {
   availableRewards: BigInt!
 
   # Rewards
-  rewards: [BigInt!]! @derivedFrom(field: "owner")
+  rewards: [BigInt!]!
 
   # Pools
   pools: [Pool!]! @derivedFrom(field: "owner")
