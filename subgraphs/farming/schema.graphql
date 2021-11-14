@@ -119,6 +119,9 @@ type Pool @entity {
   # Last reward block
   lastRewardBlock: BigInt!
 
+  # Last reward block
+  currentRound: BigInt!
+
   # Pool users
   rounds: [PoolRounds!]! @derivedFrom(field: "pool")
 
@@ -180,9 +183,6 @@ type PoolRounds @entity {
 
   # HVLP token balance
   deposits: BigInt!
-
-  # Pool users
-  users: [User!]! @derivedFrom(field: "poolRounds")
 
   # User count
   userCount: BigInt!
@@ -279,13 +279,10 @@ type User @entity {
   pool: Pool
 
   # Related pool
-  poolRounds: [PoolRounds!]! @derivedFrom(field: "users")
+  entryRound: BigInt!
 
   # Amount
   amount: BigInt!
-
-  # Reward debt
-  rewardDebt: BigInt!
 
   # Entry USD
   entryUSD: BigDecimal!
