@@ -1,0 +1,60 @@
+specVersion: 0.0.3
+description: Farming
+repository: https://bitbucket.org/coinvestorg/subgraph
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: Farming
+    network: {{ network }}
+    source:
+      address: '{{ address }}'
+      abi: Farming
+      startBlock: {{ startBlock }}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Farming
+        - History
+        - Pool
+        - PoolRounds
+        - PoolHistory
+        - User
+      abis:
+        - name: Farming
+          file: ./config/abis/Farming.json
+        - name: Factory
+          file: ./config/abis/Factory.json
+        - name: Core
+          file: ./config/abis/Core.json
+        - name: ERC20
+          file: ./config/abis/ERC20.json
+      eventHandlers:
+        - event: Deposit(indexed address,indexed uint256,uint256)
+          handler: deposit
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: ownershipTransferred
+        - event: Withdraw(indexed address,indexed uint256,uint256)
+          handler: withdraw
+      callHandlers:
+        - function: add(uint256,address,uint16)
+          handler: add
+        - function: set(uint256,uint256,uint16)
+          handler: set
+        - function: massUpdatePools()
+          handler: massUpdatePools
+        - function: updatePool(uint256)
+          handler: updatePool
+        - function: transferOwnership(address)
+          handler: transferOwnership
+        - function: setReserveAddress(address)
+          handler: setReserveAddress
+        - function: updateReserveDistributionSchedule(uint256)
+          handler: updateReserveDistributionSchedule
+        - function: setFeeAddress(address)
+          handler: setFeeAddress
+        - function: updateReserveDistributionSchedule(uint256)
+          handler: updateReserveDistributionSchedule
+      file: ./src/farming.ts
