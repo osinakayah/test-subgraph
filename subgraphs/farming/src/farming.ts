@@ -15,7 +15,6 @@ import {
 } from '../generated/Farming/Farming'
 import { Address, BigDecimal, BigInt, ethereum, log } from '@graphprotocol/graph-ts'
 import {
-  BIG_DECIMAL_1E12,
   BIG_DECIMAL_1E18,
   BIG_DECIMAL_ZERO,
   BIG_INT_ONE,
@@ -47,6 +46,8 @@ function getFarming(block: ethereum.Block): Farming {
     farming.lastReserveDistributionTimestamp = contract.lastReserveDistributionTimestamp()
     farming.depositPeriod = contract.depositPeriod()
     farming.globalRoundId = contract.globalRoundId()
+    farming.rewards = []
+
     // userInfo ...
     farming.poolCount = BIG_INT_ZERO
 
@@ -205,22 +206,14 @@ function getPoolHistory(pool: Pool, block: ethereum.Block): PoolHistory {
 }
 
 function getPoolRounds(pool: Pool, roundId: BigInt, block: ethereum.Block): PoolRounds {
-  const totalRounds = BigInt.fromI32(pool.rounds.length)
-  if (totalRounds <= roundId) {
-    return null
-  }
-
   const id = pool.id.toString().concat('-').concat(roundId.toString())
 
   let round = PoolRounds.load(id.toString())
   const farmingContract = FarmingContract.bind(FARMING_ADDRESS)
-
   if (round === null) {
     // Create new pool.
-    pool = new Pool(id.toString())
-
-    round = new PoolRounds(id.toString())
-    round.id = id.toString()
+    pool = new Pool(pool.id)
+    round = new PoolRounds(id)
     round.pool = pool.id
 
     round.accMoneyPerShare = farmingContract.getMoneyPerShare(BigInt.fromString(pool.id), roundId)
@@ -238,6 +231,7 @@ function getPoolRounds(pool: Pool, roundId: BigInt, block: ethereum.Block): Pool
     round.exitUSD = BIG_DECIMAL_ZERO
     round.moneyHarvested = BIG_DECIMAL_ZERO
     round.moneyHarvestedUSD = BIG_DECIMAL_ZERO
+    round.updatedAt = block.timestamp
   }
 
   return round as PoolRounds
@@ -253,6 +247,7 @@ export function getUser(pid: BigInt, address: Address, block: ethereum.Block): U
     user = new User(id)
     user.pool = null
     user.address = address
+    user.entryRound = null
     user.amount = BIG_INT_ZERO
     user.moneyHarvested = BIG_DECIMAL_ZERO
     user.moneyHarvestedUSD = BIG_DECIMAL_ZERO
@@ -446,35 +441,6 @@ export function deposit(event: Deposit): void {
       const token1USD = token1Amount.times(token1PriceUSD)
 
       const entryUSD = token0USD.plus(token1USD)
-
-      // log.info(
-      //   'Token {} priceUSD: {} reserve: {} amount: {} / Token {} priceUSD: {} reserve: {} amount: {} - hvlp amount: {} total supply: {} share: {}',
-      //   [
-      //     token0.symbol(),
-      //     token0PriceUSD.toString(),
-      //     reservesResult.value.value0.toString(),
-      //     token0Amount.toString(),
-      //     token1.symbol(),
-      //     token1PriceUSD.toString(),
-      //     reservesResult.value.value1.toString(),
-      //     token1Amount.toString(),
-      //     amount.toString(),
-      //     totalSupply.toString(),
-      //     share.toString(),
-      //   ]
-      // )
-
-      // log.info('User {} has deposited {} HVLP tokens {} {} (${}) and {} {} (${}) at a combined value of ${}', [
-      //   user.address.toHex(),
-      //   amount.toString(),
-      //   token0Amount.toString(),
-      //   token0.symbol(),
-      //   token0USD.toString(),
-      //   token1Amount.toString(),
-      //   token1.symbol(),
-      //   token1USD.toString(),
-      //   entryUSD.toString(),
-      // ])
 
       user.entryUSD = user.entryUSD.plus(entryUSD)
 
