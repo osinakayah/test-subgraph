@@ -1,0 +1,304 @@
+# Farming
+type Farming @entity {
+  # Contract address
+  id: ID!
+
+  # Owner
+  owner: Bytes!
+
+  # Owner
+  feeAddress: Bytes!
+
+  # Owner
+  reserve: Bytes!
+
+  # Money
+  money: Bytes!
+
+  # Total allocation point
+  totalAllocPoint: BigInt!
+
+  # Rewards available
+  availableRewards: BigInt!
+
+  # Rewards
+  rewards: [BigInt!]!
+
+  # Pools
+  pools: [Pool!]! @derivedFrom(field: "owner")
+
+  # Pool count
+  poolCount: BigInt!
+
+  # Global Round Id
+  globalRoundId: BigInt!
+
+  # Reserve Distribution Schedule
+  reserveDistributionSchedule: BigInt!
+
+  # Last Reserve Distribution Time
+  lastReserveDistributionTimestamp: BigInt!
+
+  # Deposit Period
+  depositPeriod: BigInt!
+
+  # HVLP Balance
+  hvlpBalance: BigDecimal!
+
+  # HVLP Age
+  hvlpAge: BigDecimal!
+
+  # HVLP Removed
+  hvlpAgeRemoved: BigDecimal!
+
+  # HVLP Deposited
+  hvlpDeposited: BigDecimal!
+
+  # HVLP Withdrawn
+  hvlpWithdrawn: BigDecimal!
+
+  # History
+  history: [History!]! @derivedFrom(field: "owner")
+
+  # Upated at
+  updatedAt: BigInt!
+}
+
+type History @entity {
+  # Farm id concatenated with timestamp
+  id: ID!
+
+  # Owner (Farming, Pool, or User).
+  owner: Farming!
+
+  # HVLP Balance
+  hvlpBalance: BigDecimal!
+
+  # HVLP Age
+  hvlpAge: BigDecimal!
+
+  # HVLP Removed
+  hvlpAgeRemoved: BigDecimal!
+
+  # HVLP Deposited
+  hvlpDeposited: BigDecimal!
+
+  # HVLP Withdrawn
+  hvlpWithdrawn: BigDecimal!
+
+  # Timestamp
+  timestamp: BigInt!
+
+  # Block
+  block: BigInt!
+}
+
+# Pool
+type Pool @entity {
+  # Index of pool in poolInfo on Farming contract
+  id: ID!
+
+  # Owner
+  owner: Farming!
+
+  # Pair Liquidity Token Address
+  pair: Bytes!
+
+  # Pool Created At
+  poolStartTime: BigInt!
+
+  # Pool deposit fee
+  depositFeeBP: BigInt!
+
+  # Global Round Id at Pool Creation
+  globalRoundId: BigInt!
+
+  # Allocation point
+  allocPoint: BigInt!
+
+  # Last reward block
+  lastRewardBlock: BigInt!
+
+  # Last reward block
+  currentRound: BigInt!
+
+  # Pool users
+  rounds: [PoolRounds!]! @derivedFrom(field: "pool")
+
+  # HVLP token balance
+  balance: BigInt!
+
+  # Pool users
+  users: [User!]! @derivedFrom(field: "pool")
+
+  # User count
+  userCount: BigInt!
+
+  # HVLP Balance
+  hvlpBalance: BigDecimal!
+
+  # HVLP Age
+  hvlpAge: BigDecimal!
+
+  # HVLP Removed
+  hvlpAgeRemoved: BigDecimal!
+
+  # HVLP Deposited
+  hvlpDeposited: BigDecimal!
+
+  # HVLP Withdrawn
+  hvlpWithdrawn: BigDecimal!
+
+  # Timestamp
+  timestamp: BigInt!
+
+  # Block
+  block: BigInt!
+
+  # Upated at
+  updatedAt: BigInt!
+
+  # Entry USD
+  entryUSD: BigDecimal!
+
+  # Exit USD
+  exitUSD: BigDecimal!
+
+  # Money harvested
+  moneyHarvested: BigDecimal!
+
+  # Money harvested
+  moneyHarvestedUSD: BigDecimal!
+}
+
+type PoolRounds @entity {
+  # Index of pool round in pool on Farming contract
+  id: ID!
+
+  # Pool
+  pool: Pool!
+
+  # Accumulated money per share
+  accMoneyPerShare: BigInt!
+
+  # HVLP token balance
+  deposits: BigInt!
+
+  # User count
+  userCount: BigInt!
+
+  # HVLP Balance
+  hvlpBalance: BigDecimal!
+
+  # HVLP Age
+  hvlpAge: BigDecimal!
+
+  # HVLP Removed
+  hvlpAgeRemoved: BigDecimal!
+
+  # HVLP Deposited
+  hvlpDeposited: BigDecimal!
+
+  # HVLP Withdrawn
+  hvlpWithdrawn: BigDecimal!
+
+  # Timestamp
+  timestamp: BigInt!
+
+  # Block
+  block: BigInt!
+
+  # Upated at
+  updatedAt: BigInt!
+
+  # Entry USD
+  entryUSD: BigDecimal!
+
+  # Exit USD
+  exitUSD: BigDecimal!
+
+  # Money harvested
+  moneyHarvested: BigDecimal!
+
+  # Money harvested
+  moneyHarvestedUSD: BigDecimal!
+}
+
+type PoolHistory @entity {
+  # Pool id concatenated with timestamp
+  id: ID!
+
+  # Pool
+  pool: Pool!
+
+  # HVLP Balance
+  hvlpBalance: BigDecimal!
+
+  # HVLP Age
+  hvlpAge: BigDecimal!
+
+  # HVLP Removed
+  hvlpAgeRemoved: BigDecimal!
+
+  # HVLP Deposited
+  hvlpDeposited: BigDecimal!
+
+  # HVLP Withdrawn
+  hvlpWithdrawn: BigDecimal!
+
+  # User Count
+  userCount: BigInt!
+
+  # Timestamp
+  timestamp: BigInt!
+
+  # Block
+  block: BigInt!
+
+  # Entry USD
+  entryUSD: BigDecimal!
+
+  # Exit USD
+  exitUSD: BigDecimal!
+
+  # Money harvested
+  moneyHarvested: BigDecimal!
+
+  # Money harvested
+  moneyHarvestedUSD: BigDecimal!
+}
+
+type User @entity {
+  # Pool id concatenated with user address
+  id: ID!
+
+  # User address
+  address: Bytes!
+
+  # Related pool
+  pool: Pool
+
+  # Related pool
+  entryRound: BigInt!
+
+  # Amount
+  amount: BigInt!
+
+  # Entry USD
+  entryUSD: BigDecimal!
+
+  # Exit USD
+  exitUSD: BigDecimal!
+
+  # Money harvested
+  moneyHarvested: BigDecimal!
+
+  # Money harvested
+  moneyHarvestedUSD: BigDecimal!
+
+  # Timestamp
+  timestamp: BigInt!
+
+  # Block
+  block: BigInt!
+}

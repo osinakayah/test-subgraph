@@ -1,0 +1,142 @@
+# Bar
+type Bar @entity {
+  # Contract address
+  id: ID!
+
+  # Decimals
+  decimals: Int!
+
+  # Name
+  name: String!
+
+  # Money token
+  money: Bytes!
+
+  # Symbol
+  symbol: String!
+
+  # Total xMoney supply
+  totalSupply: BigDecimal!
+
+  # Ratio xMoney per Money
+  ratio: BigDecimal!
+
+  # xMoney minted
+  xMoneyMinted: BigDecimal!
+
+  # xMoney burned
+  xMoneyBurned: BigDecimal!
+
+  # Money staked
+  moneyStaked: BigDecimal!
+
+  # Money staked USD
+  moneyStakedUSD: BigDecimal!
+
+  # Money harvested
+  moneyHarvested: BigDecimal!
+
+  # Money harvested USD
+  moneyHarvestedUSD: BigDecimal!
+
+  # xMoney age
+  xMoneyAge: BigDecimal!
+
+  # xMoney age destroyed
+  xMoneyAgeDestroyed: BigDecimal!
+
+  # Users in the bar
+  users: [User!]! @derivedFrom(field: "bar")
+
+  # Updated at
+  updatedAt: BigInt!
+}
+
+# User
+type User @entity {
+  # ID
+  id: ID!
+
+  # Bar
+  bar: Bar
+
+  # xMoney (balance)
+  xMoney: BigDecimal!
+
+  # xMoney In
+  xMoneyIn: BigDecimal!
+
+  # xMoney Out
+  xMoneyOut: BigDecimal!
+
+  # Minted
+  xMoneyMinted: BigDecimal!
+
+  # Burned
+  xMoneyBurned: BigDecimal!
+
+  # xMoney offset
+  xMoneyOffset: BigDecimal!
+
+  # xMoney age
+  xMoneyAge: BigDecimal!
+
+  # xMoney age destroyed
+  xMoneyAgeDestroyed: BigDecimal!
+
+  # Staked
+  moneyStaked: BigDecimal!
+
+  # Sum of $ at time of staking
+  moneyStakedUSD: BigDecimal!
+
+  # Harvested
+  moneyHarvested: BigDecimal!
+
+  # Sum of $ at time of harvesting
+  moneyHarvestedUSD: BigDecimal!
+
+  # To get bar pending money (xMoney * staked / bar.totalSupply)
+
+  # Money Out
+  moneyOut: BigDecimal!
+
+  # Money In
+  moneyIn: BigDecimal!
+
+  # USD Out
+  usdOut: BigDecimal!
+
+  # USD In
+  usdIn: BigDecimal!
+
+  # Updated at
+  updatedAt: BigInt!
+
+  # money offset
+  moneyOffset: BigDecimal!
+
+  # usd offset
+  usdOffset: BigDecimal!
+}
+
+# History
+enum Timeframe {
+  Day
+}
+
+type History @entity {
+  id: ID!
+  date: Int!
+  timeframe: Timeframe!
+  moneyStaked: BigDecimal!
+  moneyStakedUSD: BigDecimal!
+  moneyHarvested: BigDecimal!
+  moneyHarvestedUSD: BigDecimal!
+  xMoneyAge: BigDecimal!
+  xMoneyAgeDestroyed: BigDecimal!
+  xMoneyMinted: BigDecimal!
+  xMoneyBurned: BigDecimal!
+  xMoneySupply: BigDecimal!
+  ratio: BigDecimal!
+}

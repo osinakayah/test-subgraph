@@ -1,0 +1,31 @@
+specVersion: 0.0.3
+description: Staking
+repository: https://bitbucket.org/coinvestorg/subgraph
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: Staking
+    network: {{ network }}
+    source:
+      address: '{{ address }}'
+      abi: Staking
+      startBlock: {{ startBlock }}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Bar
+        - User
+      abis:
+        - name: Staking
+          file: ./config/abis/Staking.json
+        - name: MoneyToken
+          file: ./config/abis/MoneyToken.json
+        - name: Core
+          file: ./config/abis/Core.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: transfer
+      file: ./src/bar.ts
