@@ -1,15 +1,30 @@
 {
   "network": "ropsten",
   "factory_address": "0x96F3aD81A8F1C688465F4818feEc33e483f821AE",
-  "farming_address": "0x48fc14beFFf0eAE7A891db95c72919c0fdEc730d",
+  "farming_address": "0x308f6afbbbd1Cd9BC5AF18E6a099a36930111fa5",
   "staking_address": "0xef67239950364B22e6474a5bBE9cc075C4026C82",
   "money_address": "0xD224DC5E2005c315A944a4f9635dbecC4FE2C451",
   "weth_address": "0xc778417E063141139Fce010982780140Aa0cD5Ab",
   "uniswap_factory_address": "0x5c69bee701ef814a2b6a3edd4b1652cb9cc5aa6f",
-  "minimum_usd_threshold_new_pairs": "3000",
-  "minimum_liquidity_threshold_eth": "1",
+  "minimum_usd_threshold_new_pairs": "0",
+  "minimum_liquidity_threshold_eth": "0",
   "factory": {
     "address": "0x96F3aD81A8F1C688465F4818feEc33e483f821AE",
     "startBlock": "11305165"
-  }
+  },
+  "money_usdt_pair_address": "0x0c8f77ffbb337e3cb6d903c64f7abe8db67c74c8",
+  "xmoney_usdc_pair_address": "0x0000000000000000000000000000000000000000",
+  "xmoney_weth_pair_address": "0x0000000000000000000000000000000000000000",
+  "money_distributor_address": "0x22661F2f798e2dc8B798fbEEFC0096EC01F65874",
+  "usdc_weth_pair": "0x1d5c62cda00508c061458c1ab5c2976125b36ab0",
+  "dai_weth_pair": "0x0df6eadbeedd5581c807223b6a204b9a9f6127ea",
+  "usdt_weth_pair": "0x4a038933508500c70b005a6d6c533b730db7d28e",
+  "money_usdt_pair": "0x0c8f77ffbb337e3cb6d903c64f7abe8db67c74c8",
+  "hodl_weth_usdt_pair_address": "0x4a038933508500c70b005a6d6c533b730db7d28e",
+  "uniswap_weth_usdt_pair_address": "0xE5133CA897f1c5cdd273775EEFB950f3055F125D",
+  "uniswap_money_eth_pair_address": "0x316432B6D50a63Be6Ec83E0700bE75e14278c8AA",
+  "uniswap_money_usdt_pair_address": "0x05dBf042D2dCbBD0552f90980F6d7a9f7dE92e2E",
+  "usdc_address": "0x9663597e8b101dd58ebe9dce9de722aec54b44c3",
+  "usdt_address": "0x110a13fc3efe6a245b50102d2d79b3e76125ae83",
+  "dai_address": "0xc2118d4d90b274016cb7a54c03ef52e6c537d957"
 }
