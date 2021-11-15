@@ -7,7 +7,7 @@
         "codegen": "graph codegen subgraph.yaml",
         "build": "graph build subgraph.yaml",
         "sdeploy": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ sushiswap/master-chef subgraph.yaml",
-        "deploy:ropsten": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ ameesha1205/farm-staging ./subgraph.yaml --access-token ",
+        "deploy:ropsten": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ ameesha1205/farm-staging ./subgraph.yaml --access-token",
         "deploy-studio": "graph deploy --studio sushi---masterchef",
         "create-local": "graph create --node http://localhost:8020/ /sushiswap/sushiswap",
         "remove-local": "graph remove --node http://localhost:8020/ /sushiswap/sushiswap",
