@@ -32,15 +32,15 @@ export function getUSDRate(token: Address, block: ethereum.Block): BigDecimal {
 
     const pair = PairContract.bind(address)
 
-    const reserves = pair.getReserves()
+    const reserves = pair.try_getReserves()
 
-    const reserve0 = reserves.value0.toBigDecimal().times(BIG_DECIMAL_1E18)
+    if (!reserves.reverted) {
+      const reserve0 = reserves.value.value0.toBigDecimal().times(BIG_DECIMAL_1E18)
+      const reserve1 = reserves.value.value1.toBigDecimal().times(BIG_DECIMAL_1E18)
+      const ethPriceUSD = reserve1.div(reserve0).div(BIG_DECIMAL_1E6).times(BIG_DECIMAL_1E18)
 
-    const reserve1 = reserves.value1.toBigDecimal().times(BIG_DECIMAL_1E18)
-
-    const ethPriceUSD = reserve1.div(reserve0).div(BIG_DECIMAL_1E6).times(BIG_DECIMAL_1E18)
-
-    return ethPriceUSD.times(tokenPriceETH)
+      return ethPriceUSD.times(tokenPriceETH)
+    }
   }
 
   return usdt

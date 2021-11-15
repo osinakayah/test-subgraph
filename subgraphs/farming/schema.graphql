@@ -279,7 +279,7 @@ type User @entity {
   pool: Pool
 
   # Related pool
-  entryRound: BigInt!
+  entryRound: BigInt
 
   # Amount
   amount: BigInt!

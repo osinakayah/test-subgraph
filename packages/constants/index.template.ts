@@ -28,7 +28,7 @@ export const LOCKUP_POOL_NUMBER = BigInt.fromI32(29)
 
 export const LOCKUP_BLOCK_NUMBER = BigInt.fromI32(10959148)
 
-export const FARMING_START_BLOCK = BigInt.fromI32(10750000)
+export const FARMING_START_BLOCK = BigInt.fromI32(11427232)
 
 export const UNISWAP_MONEY_ETH_PAIR_FIRST_LIQUDITY_BLOCK = BigInt.fromI32(10750005)
 
@@ -121,7 +121,7 @@ export const HODL_WETH_USDT_PAIR_ADDRESS = Address.fromString(
 )
 
 export const USDT_ADDRESS = Address.fromString(
-  '{{ usdt_address }}{{^usdt_address}}0x0000000000000000000000000000000000000000{{/usdt_address}}'
+  '{{ usdt_address }}{{^usdt_address}}0x0d9c8723b343a8368bebe0b5e89273ff8d712e3c{{/usdt_address}}'
 )
 
 export const UNISWAP_FACTORY_ADDRESS = Address.fromString(
@@ -171,9 +171,9 @@ export const NATIVE = Address.fromString(
   '{{ native_address }}{{^native_address}}0x0000000000000000000000000000000000000000{{/native_address}}'
 )
 
-export const USDC = '{{ usdc_address }}{{^usdc_address}}0x0000000000000000000000000000000000000000{{/usdc_address}}'
+export const USDC = '{{ usdc_address }}{{^usdc_address}}0x0d9c8723b343a8368bebe0b5e89273ff8d712e3c{{/usdc_address}}'
 
-export const USDT = '{{ usdt_address }}{{^usdt_address}}0x0000000000000000000000000000000000000000{{/usdt_address}}'
+export const USDT = '{{ usdt_address }}{{^usdt_address}}0x0d9c8723b343a8368bebe0b5e89273ff8d712e3c{{/usdt_address}}'
 
 export const DAI = '{{ dai_address }}{{^dai_address}}0x0000000000000000000000000000000000000000{{/dai_address}}'
 
