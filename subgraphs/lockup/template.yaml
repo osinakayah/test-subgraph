@@ -25,9 +25,9 @@ dataSources:
         - name: Core
           file: ./config/abis/Core.json
       eventHandlers:
-        - event: Deposit(indexed address,indexed uint256,uint256)
+        - event: Deposit(indexed address,indexed uint256,uint256,uint256,uint256)
           handler: deposit
-        - event: Withdraw(indexed address,indexed uint256,uint256)
+        - event: Withdraw(indexed address,indexed uint256,uint256,uint256,uint256)
           handler: withdraw
       callHandlers:
         - function: set(uint256,uint256,uint16)

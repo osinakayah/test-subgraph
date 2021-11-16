@@ -4,10 +4,11 @@
   "repository": "https://github.com/graphprotocol/uniswap-v2-subgraph",
   "license": "GPL-3.0-or-later",
   "scripts": {
+    "prepare:ropsten": "mustache ../../config/ropsten.json template.yaml > subgraph.yaml",
     "codegen": "graph codegen --output-dir src/types/",
     "build": "graph build",
-    "deploy-local": "graph deploy hodl/uniswap --debug --ipfs http://localhost:5001 --node http://127.0.0.1:8020",
-    "deploy:ropsten": "graph deploy ameesha1205/uniswap-v2-ropsten --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ --debug --access-token",
+    "deploy:local": "graph deploy hodl/uniswap --debug --ipfs http://localhost:5001 --node http://127.0.0.1:8020",
+    "deploy:ropsten": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ ameesha1205/uniswap-v2-ropsten ./subgraph.yaml --access-token ",
     "watch-local": "graph deploy graphprotocol/Uniswap2 --watch --debug --node http://127.0.0.1:8020/ --ipfs http://localhost:5001"
   },
   "devDependencies": {
