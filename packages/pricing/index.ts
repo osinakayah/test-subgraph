@@ -24,7 +24,7 @@ export function getUSDRate(token: Address, block: ethereum.Block): BigDecimal {
   const usdt = BIG_DECIMAL_ONE
 
   if (token != USDT_ADDRESS) {
-    const address = block.number.le(BigInt.fromI32(10829344))
+    const address = block.number.le(BigInt.fromI32(11305148))
       ? UNISWAP_WETH_USDT_PAIR_ADDRESS
       : HODL_WETH_USDT_PAIR_ADDRESS
 
@@ -51,7 +51,7 @@ export function getEthRate(token: Address, block: ethereum.Block): BigDecimal {
 
   if (token != WETH_ADDRESS) {
     const factory = FactoryContract.bind(
-      block.number.le(BigInt.fromI32(10829344)) ? UNISWAP_FACTORY_ADDRESS : FACTORY_ADDRESS
+      block.number.le(BigInt.fromI32(11305148)) ? UNISWAP_FACTORY_ADDRESS : FACTORY_ADDRESS
     )
 
     const address = factory.getPair(token, WETH_ADDRESS)
@@ -80,13 +80,13 @@ export function getMoneyPrice(block: ethereum.Block): BigDecimal {
   if (block.number.lt(UNISWAP_MONEY_ETH_PAIR_FIRST_LIQUDITY_BLOCK)) {
     // If before uniswap sushi-eth pair creation and liquidity added, return zero
     return BIG_DECIMAL_ZERO
-  } else if (block.number.lt(BigInt.fromI32(10800029))) {
+  } else if (block.number.lt(BigInt.fromI32(11305148))) {
     // Else if before uniswap sushi-usdt pair creation (get price from eth sushi-eth pair above)
     return getUSDRate(MONEY_TOKEN_ADDRESS, block)
   } else {
     // Else get price from either uni or sushi usdt pair depending on space-time
     const pair = PairContract.bind(
-      block.number.le(BigInt.fromI32(10829344)) ? UNISWAP_MONEY_USDT_PAIR_ADDRESS : MONEY_USDT_PAIR_ADDRESS
+      block.number.le(BigInt.fromI32(11432276)) ? UNISWAP_MONEY_USDT_PAIR_ADDRESS : MONEY_USDT_PAIR_ADDRESS
     )
     const reserves = pair.getReserves()
     return reserves.value1
