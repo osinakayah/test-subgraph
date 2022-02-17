@@ -1,21 +1,21 @@
+/* eslint-disable prefer-const */
 import {
-  AddCall,
-  Deposit,
   TransferOwnershipCall,
-  MassUpdatePoolsCall,
-  Farming as FarmingContract,
+  FarmFactory as FarmFactoryContract,
   OwnershipTransferred,
-  SetCall,
-  UpdatePoolCall,
-  Withdraw,
+  NewPool,
+  UpdatePool,
   UpdateReserveDistributionScheduleCall,
   SetReserveAddressCall,
   SetFeeAddressCall,
   PullRewardsCall
-} from '../generated/Farming/Farming'
+} from '../generated/FarmFactory/FarmFactory'
+
+import { PoolUpdated, Deposit, Withdraw, Farm as FarmContract } from '../generated/templates/Farm/Farm'
 import { Address, BigDecimal, BigInt, ethereum, log } from '@graphprotocol/graph-ts'
 import {
   BIG_DECIMAL_1E18,
+  BIG_DECIMAL_ONE,
   BIG_DECIMAL_ZERO,
   BIG_INT_ONE,
   BIG_INT_ONE_DAY_SECONDS,
@@ -24,24 +24,30 @@ import {
   FARMING_START_BLOCK
 } from 'const'
 import { History, Farming, Pool, PoolHistory, User, PoolRounds } from '../generated/schema'
-import { getMoneyPrice, getUSDRate } from 'pricing'
+import { Core as PairContract } from '../generated/FarmFactory/Core'
 
-import { Core as PairContract } from '../generated/Farming/Core'
+function getMoneyPrice(block: ethereum.Block): BigDecimal {
+  return BIG_DECIMAL_ONE
+}
+function getUSDRate(address: Address, block: ethereum.Block): BigDecimal {
+  return BIG_DECIMAL_ONE
+}
 
-function getFarming(block: ethereum.Block): Farming {
+// Entities initialization and getters
+export function getFarming(block: ethereum.Block): Farming {
   let farming = Farming.load(FARMING_ADDRESS.toHex())
 
   if (farming === null) {
-    const contract = FarmingContract.bind(FARMING_ADDRESS)
+    const contract = FarmFactoryContract.bind(FARMING_ADDRESS)
     farming = new Farming(FARMING_ADDRESS.toHex())
     farming.owner = contract.owner()
-    // poolInfo ...
+
+    // pool Info ...
     farming.money = contract.money()
     farming.feeAddress = contract.feeAddress()
     farming.reserve = contract.reserve()
     farming.totalAllocPoint = contract.totalAllocPoint()
 
-    farming.availableRewards = contract.availableRewards()
     farming.reserveDistributionSchedule = contract.reserveDistributionSchedule()
     farming.lastReserveDistributionTimestamp = contract.lastReserveDistributionTimestamp()
     farming.depositPeriod = contract.depositPeriod()
@@ -65,71 +71,45 @@ function getFarming(block: ethereum.Block): Farming {
   return farming as Farming
 }
 
-export function transferOwnership(call: TransferOwnershipCall): void {
-  log.info('owner changed to {}', [call.inputs.newOwner.toHex()])
+export function getHistory(owner: string, block: ethereum.Block): History {
+  const day = block.timestamp.div(BIG_INT_ONE_DAY_SECONDS)
 
-  const farming = getFarming(call.block)
-  farming.owner = call.inputs.newOwner
-  farming.save()
+  const id = owner.concat(day.toString())
+
+  let history = History.load(id)
+
+  if (history === null) {
+    history = new History(id)
+    history.owner = owner
+    history.hvlpBalance = BIG_DECIMAL_ZERO
+    history.hvlpAge = BIG_DECIMAL_ZERO
+    history.hvlpAgeRemoved = BIG_DECIMAL_ZERO
+    history.hvlpDeposited = BIG_DECIMAL_ZERO
+    history.hvlpWithdrawn = BIG_DECIMAL_ZERO
+    history.timestamp = block.timestamp
+    history.block = block.number
+  }
+
+  return history as History
 }
 
-export function updateReserveDistributionSchedule(call: UpdateReserveDistributionScheduleCall): void {
-  log.info('reserve distribution schedule changed to {}', [call.inputs._reserveDistributionSchedule.toString()])
-
-  const farming = getFarming(call.block)
-  farming.reserveDistributionSchedule = call.inputs._reserveDistributionSchedule
-  farming.save()
-}
-
-export function setReserveAddress(call: SetReserveAddressCall): void {
-  log.info('Reserve Address changed to {}', [call.inputs._reserveAddress.toHex()])
-
-  const farming = getFarming(call.block)
-  farming.reserve = call.inputs._reserveAddress
-  farming.save()
-}
-
-export function setFeeAddress(call: SetFeeAddressCall): void {
-  log.info('Fee Address changed to {}', [call.inputs._feeAddress.toHex()])
-
-  const farming = getFarming(call.block)
-  farming.feeAddress = call.inputs._feeAddress
-  farming.save()
-}
-
-export function ownershipTransferred(event: OwnershipTransferred): void {
-  log.info('Ownership transfered from previous owner: {} to new owner: {}', [
-    event.params.previousOwner.toHex(),
-    event.params.newOwner.toHex()
-  ])
-}
-
-export function getPool(id: BigInt, block: ethereum.Block): Pool {
-  let pool = Pool.load(id.toString())
+export function getPool(address: Address, block: ethereum.Block = null): Pool {
+  let pool = Pool.load(address.toHex())
 
   if (pool === null) {
-    const farming = getFarming(block)
-
-    const farmingContract = FarmingContract.bind(FARMING_ADDRESS)
-    const poolLength = farmingContract.poolLength()
-
-    if (id >= poolLength) {
-      return null
-    }
-
+    const poolContract = FarmContract.bind(address)
+    let farming = getFarming(block)
     // Create new pool.
-    pool = new Pool(id.toString())
+    pool = new Pool(address.toHex())
 
     // Set relation
     pool.owner = farming.id
 
-    const poolInfo = farmingContract.poolInfo(farming.poolCount)
-
-    pool.pair = poolInfo.value0
-    pool.poolStartTime = poolInfo.value1
-    pool.globalRoundId = poolInfo.value2
-    pool.allocPoint = poolInfo.value3
-    pool.depositFeeBP = BigInt.fromI32(poolInfo.value4)
+    pool.pair = poolContract.lpToken()
+    pool.poolStartTime = poolContract.poolStartTime()
+    pool.globalRoundId = poolContract.globalRoundId()
+    pool.allocPoint = poolContract.allocPoint()
+    pool.depositFeeBP = BigInt.fromI32(poolContract.depositFeeBP())
     pool.lastRewardBlock = BIG_INT_ZERO
     pool.currentRound = BIG_INT_ZERO
 
@@ -157,29 +137,40 @@ export function getPool(id: BigInt, block: ethereum.Block): Pool {
   return pool as Pool
 }
 
-function getHistory(owner: string, block: ethereum.Block): History {
-  const day = block.timestamp.div(BIG_INT_ONE_DAY_SECONDS)
+export function getPoolRounds(poolAddress: Address, roundId: BigInt, block: ethereum.Block): PoolRounds {
+  const id = poolAddress.toString().concat('-').concat(roundId.toString())
 
-  const id = owner.concat(day.toString())
+  let round = PoolRounds.load(id.toString())
 
-  let history = History.load(id)
+  let farmingContract = FarmContract.bind(poolAddress)
+  if (round === null) {
+    // Create new pool.
+    const pool = new Pool(poolAddress.toHex())
+    round = new PoolRounds(id)
+    round.pool = pool.id
 
-  if (history === null) {
-    history = new History(id)
-    history.owner = owner
-    history.hvlpBalance = BIG_DECIMAL_ZERO
-    history.hvlpAge = BIG_DECIMAL_ZERO
-    history.hvlpAgeRemoved = BIG_DECIMAL_ZERO
-    history.hvlpDeposited = BIG_DECIMAL_ZERO
-    history.hvlpWithdrawn = BIG_DECIMAL_ZERO
-    history.timestamp = block.timestamp
-    history.block = block.number
+    round.accMoneyPerShare = farmingContract.getMoneyPerShare(roundId)
+    round.deposits = farmingContract.getPoolDeposits(roundId)
+
+    round.userCount = BIG_INT_ZERO
+    round.hvlpBalance = BIG_DECIMAL_ZERO
+    round.hvlpAge = BIG_DECIMAL_ZERO
+    round.hvlpAgeRemoved = BIG_DECIMAL_ZERO
+    round.hvlpDeposited = BIG_DECIMAL_ZERO
+    round.hvlpWithdrawn = BIG_DECIMAL_ZERO
+    round.timestamp = block.timestamp
+    round.block = block.number
+    round.entryUSD = BIG_DECIMAL_ZERO
+    round.exitUSD = BIG_DECIMAL_ZERO
+    round.moneyHarvested = BIG_DECIMAL_ZERO
+    round.moneyHarvestedUSD = BIG_DECIMAL_ZERO
+    round.updatedAt = block.timestamp
   }
 
-  return history as History
+  return round as PoolRounds
 }
 
-function getPoolHistory(pool: Pool, block: ethereum.Block): PoolHistory {
+export function getPoolHistory(pool: Pool, block: ethereum.Block): PoolHistory {
   const day = block.timestamp.div(BIG_INT_ONE_DAY_SECONDS)
 
   const id = pool.id.concat(day.toString())
@@ -203,38 +194,6 @@ function getPoolHistory(pool: Pool, block: ethereum.Block): PoolHistory {
   }
 
   return history as PoolHistory
-}
-
-function getPoolRounds(pool: Pool, roundId: BigInt, block: ethereum.Block): PoolRounds {
-  const id = pool.id.toString().concat('-').concat(roundId.toString())
-
-  let round = PoolRounds.load(id.toString())
-  const farmingContract = FarmingContract.bind(FARMING_ADDRESS)
-  if (round === null) {
-    // Create new pool.
-    pool = new Pool(pool.id)
-    round = new PoolRounds(id)
-    round.pool = pool.id
-
-    round.accMoneyPerShare = farmingContract.getMoneyPerShare(BigInt.fromString(pool.id), roundId)
-    round.deposits = farmingContract.getPoolDeposits(BigInt.fromString(pool.id), roundId)
-
-    round.userCount = BIG_INT_ZERO
-    round.hvlpBalance = BIG_DECIMAL_ZERO
-    round.hvlpAge = BIG_DECIMAL_ZERO
-    round.hvlpAgeRemoved = BIG_DECIMAL_ZERO
-    round.hvlpDeposited = BIG_DECIMAL_ZERO
-    round.hvlpWithdrawn = BIG_DECIMAL_ZERO
-    round.timestamp = block.timestamp
-    round.block = block.number
-    round.entryUSD = BIG_DECIMAL_ZERO
-    round.exitUSD = BIG_DECIMAL_ZERO
-    round.moneyHarvested = BIG_DECIMAL_ZERO
-    round.moneyHarvestedUSD = BIG_DECIMAL_ZERO
-    round.updatedAt = block.timestamp
-  }
-
-  return round as PoolRounds
 }
 
 export function getUser(pid: BigInt, address: Address, block: ethereum.Block): User {
@@ -261,12 +220,20 @@ export function getUser(pid: BigInt, address: Address, block: ethereum.Block): U
   return user as User
 }
 
-export function add(event: AddCall): void {
-  const farming = getFarming(event.block)
+// Farm Events
+export function ownershipTransferred(event: OwnershipTransferred): void {
+  log.info('Ownership transfered from previous owner: {} to new owner: {}', [
+    event.params.previousOwner.toHex(),
+    event.params.newOwner.toHex()
+  ])
+}
+
+export function add(event: NewPool): void {
+  let farming = getFarming(event.block)
 
   log.info('Add pool #{}', [farming.poolCount.toString()])
 
-  const pool = getPool(farming.poolCount, event.block)
+  const pool = getPool(event.params.farm, event.block)
 
   if (pool === null) {
     log.error('Pool added with id greater than poolLength, pool #{}', [farming.poolCount.toString()])
@@ -280,53 +247,27 @@ export function add(event: AddCall): void {
   farming.save()
 }
 
-// Calls
-export function set(call: SetCall): void {
-  log.info('Set pool id: {} allocPoint: {} withUpdate: {}', [
-    call.inputs._pid.toString(),
-    call.inputs._allocPoint.toString(),
-    call.inputs._depositFeeBP ? 'true' : 'false'
-  ])
+export function set(event: UpdatePool): void {
+  const pool = getPool(event.params.farm, event.block)
 
-  const pool = getPool(call.inputs._pid, call.block)
-
-  const farming = getFarming(call.block)
+  let farming = getFarming(event.block)
 
   // Update farming
-  farming.totalAllocPoint = farming.totalAllocPoint.plus(call.inputs._allocPoint.minus(pool.allocPoint))
+  farming.totalAllocPoint = farming.totalAllocPoint.plus(event.params.allocPoint.minus(pool.allocPoint))
   farming.save()
 
   // Update pool
-  pool.allocPoint = call.inputs._allocPoint
-  pool.depositFeeBP = BigInt.fromI32(call.inputs._depositFeeBP)
+  pool.allocPoint = event.params.allocPoint
+  pool.depositFeeBP = BigInt.fromI32(event.params.depositFeeBP)
   pool.save()
 }
 
-export function massUpdatePools(call: MassUpdatePoolsCall): void {
-  log.info('Mass update pools', [])
-}
-
-export function pullRewards(call: PullRewardsCall): void {
-  const farming = getFarming(call.block)
-
-  farming.globalRoundId = farming.globalRoundId.plus(new BigInt(1))
-  farming.availableRewards = farming.availableRewards.plus(call.outputs.rewardAccumulated)
-  farming.lastReserveDistributionTimestamp = call.block.timestamp
-  const rewards = farming.rewards
-  rewards.push(call.outputs.rewardAccumulated)
-  farming.rewards = rewards
-
-  farming.save()
-}
-
-export function updatePool(call: UpdatePoolCall): void {
-  log.info('Update pool id {}', [call.inputs._pid.toString()])
-
-  const farming = FarmingContract.bind(FARMING_ADDRESS)
-  const pool = getPool(call.inputs._pid, call.block)
+export function updatePool(event: PoolUpdated): void {
+  let farming = FarmContract.bind(event.address)
+  const pool = getPool(event.address)
 
   const lastUpdatedRound = pool.currentRound
-  const currentRound = farming.getCurrentRoundId(call.inputs._pid)
+  const currentRound = farming.getCurrentRoundId()
 
   if (lastUpdatedRound === currentRound) {
     return
@@ -334,9 +275,9 @@ export function updatePool(call: UpdatePoolCall): void {
 
   let roundUpdated = new BigInt(0)
   for (let index = lastUpdatedRound.plus(new BigInt(1)); index.lt(currentRound); index.plus(new BigInt(1))) {
-    const poolRound = getPoolRounds(pool, index, call.block)
+    const poolRound = getPoolRounds(event.address, index, event.block)
 
-    poolRound.accMoneyPerShare = farming.getMoneyPerShare(BigInt.fromString(pool.id), index)
+    poolRound.accMoneyPerShare = farming.getMoneyPerShare(index)
     if (poolRound.accMoneyPerShare.gt(new BigInt(0))) roundUpdated = index
     poolRound.save()
   }
@@ -344,9 +285,6 @@ export function updatePool(call: UpdatePoolCall): void {
   pool.save()
 }
 
-/**========================================================================================== */
-
-// Events
 export function deposit(event: Deposit): void {
   if (event.params.amount == BIG_INT_ZERO) {
     log.info('Deposit zero transaction, input {} hash {}', [
@@ -357,19 +295,13 @@ export function deposit(event: Deposit): void {
 
   const amount = event.params.amount.divDecimal(BIG_DECIMAL_1E18)
 
-  log.info('{} has deposited {} hvlp tokens to pool #{}', [
-    event.params.user.toHex(),
-    event.params.amount.toString(),
-    event.params.pid.toString()
-  ])
+  log.info('{} has deposited {} hvlp tokens to pool #{}', [event.params.user.toHex(), event.params.amount.toString()])
 
-  const farmingContract = FarmingContract.bind(FARMING_ADDRESS)
+  const farmContract = FarmContract.bind(event.address)
 
-  const poolInfo = farmingContract.poolInfo(event.params.pid)
-
-  const farming = getFarming(event.block)
-  const pool = getPool(event.params.pid, event.block)
-  const poolRound = getPoolRounds(pool, event.params.roundId, event.block)
+  let farming = getFarming(event.block)
+  const pool = getPool(event.address, event.block)
+  const poolRound = getPoolRounds(event.address, event.params.roundId, event.block)
   const poolHistory = getPoolHistory(pool, event.block)
 
   //update pool rounds
@@ -380,7 +312,7 @@ export function deposit(event: Deposit): void {
   poolRound.updatedAt = event.block.timestamp
 
   // update pool
-  const pairContract = PairContract.bind(poolInfo.value0)
+  const pairContract = PairContract.bind(Address.fromString(pool.pair.toHexString()))
 
   pool.balance = pairContract.balanceOf(FARMING_ADDRESS)
 
@@ -390,9 +322,9 @@ export function deposit(event: Deposit): void {
   pool.hvlpBalance = pool.hvlpBalance.plus(amount)
   pool.updatedAt = event.block.timestamp
 
-  const userInfo = farmingContract.userInfo(event.params.pid, event.params.user)
+  const userInfo = farmContract.userInfo(event.params.user)
 
-  const user = getUser(event.params.pid, event.params.user, event.block)
+  const user = getUser(farmContract.farmId(), event.params.user, event.block)
 
   // If not currently in pool and depositing HVLP
   if (!user.pool && event.params.amount.gt(BIG_INT_ZERO)) {
@@ -456,14 +388,14 @@ export function deposit(event: Deposit): void {
   pool.save()
   poolRound.save()
 
-  const farmingDays = event.block.timestamp.minus(farming.updatedAt).divDecimal(BigDecimal.fromString('86400'))
+  let farmingDays = event.block.timestamp.minus(farming.updatedAt).divDecimal(BigDecimal.fromString('86400'))
   farming.hvlpAge = farming.hvlpAge.plus(farmingDays.times(farming.hvlpBalance))
 
   farming.hvlpDeposited = farming.hvlpDeposited.plus(amount)
   farming.hvlpBalance = farming.hvlpBalance.plus(amount)
 
   farming.updatedAt = event.block.timestamp
-  farming.availableRewards = farmingContract.availableRewards()
+  farming.availableRewards = farmContract.availableRewards()
   farming.save()
 
   const history = getHistory(FARMING_ADDRESS.toHex(), event.block)
@@ -480,31 +412,18 @@ export function deposit(event: Deposit): void {
 }
 
 export function withdraw(event: Withdraw): void {
-  // if (event.params.amount == BIG_INT_ZERO && User.load(event.params.user.toHex()) !== null) {
-  //   log.info('Withdrawal zero transaction, input {} hash {}', [
-  //     event.transaction.input.toHex(),
-  //     event.transaction.hash.toHex(),
-  //   ])
-  // }
-
   const amount = event.params.amount.divDecimal(BIG_DECIMAL_1E18)
 
-  log.info('{} has withdrawn {} hvlp tokens from pool #{}', [
-    event.params.user.toHex(),
-    amount.toString(),
-    event.params.pid.toString()
-  ])
+  log.info('{} has withdrawn {} hvlp tokens from pool #{}', [event.params.user.toHex(), amount.toString()])
 
-  const farmingContract = FarmingContract.bind(FARMING_ADDRESS)
+  const farmContract = FarmContract.bind(event.address)
 
-  const poolInfo = farmingContract.poolInfo(event.params.pid)
-
-  const farming = getFarming(event.block)
-  const pool = getPool(event.params.pid, event.block)
-  const poolRound = getPoolRounds(pool, event.params.roundId, event.block)
+  let farming = getFarming(event.block)
+  const pool = getPool(event.address, event.block)
+  const poolRound = getPoolRounds(event.address, event.params.roundId, event.block)
   const poolHistory = getPoolHistory(pool, event.block)
 
-  const pairContract = PairContract.bind(poolInfo.value0)
+  const pairContract = PairContract.bind(Address.fromString(pool.pair.toHexString()))
   pool.balance = pairContract.balanceOf(FARMING_ADDRESS)
 
   const poolDays = event.block.timestamp.minus(pool.updatedAt).divDecimal(BigDecimal.fromString('86400'))
@@ -525,7 +444,7 @@ export function withdraw(event: Withdraw): void {
   poolRound.hvlpBalance = poolRound.hvlpBalance.minus(amount)
   poolRound.updatedAt = event.block.timestamp
 
-  const user = getUser(event.params.pid, event.params.user, event.block)
+  const user = getUser(farmContract.farmId(), event.params.user, event.block)
 
   if (event.block.number.gt(FARMING_START_BLOCK) && user.amount.gt(BIG_INT_ZERO)) {
     const pending = new BigDecimal(event.params.rewards)
@@ -540,7 +459,7 @@ export function withdraw(event: Withdraw): void {
     }
   }
 
-  const userInfo = farmingContract.userInfo(event.params.pid, event.params.user)
+  const userInfo = farmContract.userInfo(event.params.user)
 
   user.amount = userInfo.value0
   user.entryRound = userInfo.value1
@@ -571,21 +490,9 @@ export function withdraw(event: Withdraw): void {
 
       poolHistory.exitUSD = pool.exitUSD
 
-      // log.info('User {} has withdrwn {} HVLP tokens {} {} (${}) and {} {} (${}) at a combined value of ${}', [
-      //   user.address.toHex(),
-      //   amount.toString(),
-      //   token0Amount.toString(),
-      //   token0USD.toString(),
-      //   pairContract.token0().toHex(),
-      //   token1Amount.toString(),
-      //   token1USD.toString(),
-      //   pairContract.token1().toHex(),
-      //   exitUSD.toString(),
-      // ])
-
       user.exitUSD = user.exitUSD.plus(exitUSD)
     } else {
-      log.info("Withdraw couldn't get reserves for pair {}", [poolInfo.value0.toHex()])
+      log.info("Withdraw couldn't get reserves for pair {}", [pool.pair.toHex()])
     }
   }
 
@@ -608,7 +515,7 @@ export function withdraw(event: Withdraw): void {
   farming.hvlpWithdrawn = farming.hvlpWithdrawn.plus(amount)
   farming.hvlpBalance = farming.hvlpBalance.minus(amount)
   farming.updatedAt = event.block.timestamp
-  farming.availableRewards = farmingContract.availableRewards()
+  farming.availableRewards = farmContract.availableRewards()
 
   farming.save()
 
@@ -625,4 +532,49 @@ export function withdraw(event: Withdraw): void {
   poolHistory.hvlpWithdrawn = poolHistory.hvlpWithdrawn.plus(amount)
   poolHistory.userCount = pool.userCount
   poolHistory.save()
+}
+
+// Farm Functions
+export function pullRewards(call: PullRewardsCall): void {
+  let farming = getFarming(call.block)
+
+  farming.globalRoundId = farming.globalRoundId.plus(new BigInt(1))
+  farming.lastReserveDistributionTimestamp = call.block.timestamp
+  const rewards = farming.rewards
+  rewards.push(call.outputs.rewardAccumulated)
+  farming.rewards = rewards
+
+  farming.save()
+}
+
+export function transferOwnership(call: TransferOwnershipCall): void {
+  log.info('owner changed to {}', [call.inputs.newOwner.toHex()])
+
+  let farming = getFarming(call.block)
+  farming.owner = call.inputs.newOwner
+  farming.save()
+}
+
+export function updateReserveDistributionSchedule(call: UpdateReserveDistributionScheduleCall): void {
+  log.info('reserve distribution schedule changed to {}', [call.inputs._reserveDistributionSchedule.toString()])
+
+  let farming = getFarming(call.block)
+  farming.reserveDistributionSchedule = call.inputs._reserveDistributionSchedule
+  farming.save()
+}
+
+export function setReserveAddress(call: SetReserveAddressCall): void {
+  log.info('Reserve Address changed to {}', [call.inputs._reserveAddress.toHex()])
+
+  let farming = getFarming(call.block)
+  farming.reserve = call.inputs._reserveAddress
+  farming.save()
+}
+
+export function setFeeAddress(call: SetFeeAddressCall): void {
+  log.info('Fee Address changed to {}', [call.inputs._feeAddress.toHex()])
+
+  let farming = getFarming(call.block)
+  farming.feeAddress = call.inputs._feeAddress
+  farming.save()
 }

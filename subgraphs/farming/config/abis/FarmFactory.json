@@ -26,56 +26,25 @@
       {
         "indexed": true,
         "internalType": "address",
-        "name": "user",
+        "name": "farm",
         "type": "address"
       },
-      {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "pid",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "roundId",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "rewards",
-        "type": "uint256"
-      }
-    ],
-    "name": "Deposit",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
       {
         "indexed": false,
         "internalType": "contract IERC20",
-        "name": "_lpToken",
+        "name": "lpToken",
         "type": "address"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "_allocPoint",
+        "name": "allocPoint",
         "type": "uint256"
       },
       {
         "indexed": false,
         "internalType": "uint16",
-        "name": "_depositFeeBP",
+        "name": "depositFeeBP",
         "type": "uint16"
       }
     ],
@@ -99,6 +68,12 @@
       }
     ],
     "name": "OwnershipTransferred",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [],
+    "name": "RewardsAccumulated",
     "type": "event"
   },
   {
@@ -137,21 +112,21 @@
     "anonymous": false,
     "inputs": [
       {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "_pid",
-        "type": "uint256"
+        "indexed": true,
+        "internalType": "address",
+        "name": "farm",
+        "type": "address"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "_allocPoint",
+        "name": "allocPoint",
         "type": "uint256"
       },
       {
         "indexed": false,
         "internalType": "uint16",
-        "name": "_depositFeeBP",
+        "name": "depositFeeBP",
         "type": "uint16"
       }
     ],
@@ -170,56 +145,6 @@
     ],
     "name": "UpdatedReserveDistributionSchedule",
     "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "pid",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "roundId",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "rewards",
-        "type": "uint256"
-      }
-    ],
-    "name": "Withdraw",
-    "type": "event"
-  },
-  {
-    "inputs": [],
-    "name": "REWARD_PRECISION",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
   },
   {
     "inputs": [
@@ -245,23 +170,10 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "availableRewards",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "_pid",
+        "name": "_farmId",
         "type": "uint256"
       },
       {
@@ -289,6 +201,44 @@
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "farmAddresses",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "farms",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "feeAddress",
     "outputs": [
@@ -305,7 +255,7 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "_pid",
+        "name": "_farmId",
         "type": "uint256"
       }
     ],
@@ -324,7 +274,7 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "_pid",
+        "name": "_farmId",
         "type": "uint256"
       },
       {
@@ -348,7 +298,7 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "_pid",
+        "name": "_farmId",
         "type": "uint256"
       },
       {
@@ -358,6 +308,25 @@
       }
     ],
     "name": "getPoolDeposits",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_round",
+        "type": "uint256"
+      }
+    ],
+    "name": "getRewards",
     "outputs": [
       {
         "internalType": "uint256",
@@ -396,13 +365,6 @@
   },
   {
     "inputs": [],
-    "name": "massUpdatePools",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "money",
     "outputs": [
       {
@@ -431,7 +393,7 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "_pid",
+        "name": "_farmId",
         "type": "uint256"
       },
       {
@@ -446,45 +408,6 @@
         "internalType": "uint256",
         "name": "pending",
         "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "name": "poolInfo",
-    "outputs": [
-      {
-        "internalType": "contract IERC20",
-        "name": "lpToken",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "poolStartTime",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "globalRoundId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "allocPoint",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint16",
-        "name": "depositFeeBP",
-        "type": "uint16"
       }
     ],
     "stateMutability": "view",
@@ -571,8 +494,26 @@
   {
     "inputs": [
       {
+        "internalType": "address",
+        "name": "_to",
+        "type": "address"
+      },
+      {
         "internalType": "uint256",
-        "name": "_pid",
+        "name": "_amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "safeMoneyTransfer",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_farmId",
         "type": "uint256"
       },
       {
@@ -647,19 +588,6 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "_pid",
-        "type": "uint256"
-      }
-    ],
-    "name": "updatePool",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
         "name": "_reserveDistributionSchedule",
         "type": "uint256"
       }
@@ -673,36 +601,7 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "name": "userInfo",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "entryFarmRound",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_pid",
+        "name": "_farmId",
         "type": "uint256"
       },
       {

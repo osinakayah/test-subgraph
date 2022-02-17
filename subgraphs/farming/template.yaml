@@ -5,11 +5,11 @@ schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum/contract
-    name: Farming
-    network: {{ network }}
+    name: FarmFactory
+    network: '{{ network }}'
     source:
       address: '{{ address }}'
-      abi: Farming
+      abi: FarmFactory
       startBlock: {{ startBlock }}
     mapping:
       kind: ethereum/events
@@ -23,8 +23,8 @@ dataSources:
         - PoolHistory
         - User
       abis:
-        - name: Farming
-          file: ./config/abis/Farming.json
+        - name: FarmFactory
+          file: ./config/abis/FarmFactory.json
         - name: Factory
           file: ./config/abis/Factory.json
         - name: Core
@@ -32,21 +32,13 @@ dataSources:
         - name: ERC20
           file: ./config/abis/ERC20.json
       eventHandlers:
-        - event: Deposit(indexed address,indexed uint256,uint256,uint256,uint256)
-          handler: deposit
         - event: OwnershipTransferred(indexed address,indexed address)
           handler: ownershipTransferred
-        - event: Withdraw(indexed address,indexed uint256,uint256,uint256,uint256)
-          handler: withdraw
-      callHandlers:
-        - function: add(uint256,address,uint16)
+        - event: NewPool(indexed address,address,uint256,uint16)
           handler: add
-        - function: set(uint256,uint256,uint16)
+        - event: UpdatePool(indexed address,uint256,uint16)
           handler: set
-        - function: massUpdatePools()
-          handler: massUpdatePools
-        - function: updatePool(uint256)
-          handler: updatePool
+      callHandlers:
         - function: transferOwnership(address)
           handler: transferOwnership
         - function: setReserveAddress(address)
@@ -55,8 +47,35 @@ dataSources:
           handler: updateReserveDistributionSchedule
         - function: setFeeAddress(address)
           handler: setFeeAddress
-        - function: updateReserveDistributionSchedule(uint256)
-          handler: updateReserveDistributionSchedule
         - function: pullRewards()
           handler: pullRewards
       file: ./src/farming.ts
+templates:
+  - kind: ethereum/contract
+    name: Farm
+    network: '{{ network }}'
+    source:
+      abi: Farm
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./src/farming.ts
+      entities:
+        - History
+        - Pool
+        - PoolRounds
+        - PoolHistory
+        - User
+      abis:
+        - name: FarmFactory
+          file: ./config/abis/FarmFactory.json
+        - name: Farm
+          file: ./config/abis/Farm.json
+      eventHandlers:
+        - event: Deposit(indexed address,uint256,uint256,uint256)
+          handler: deposit
+        - event: Withdraw(indexed address,uint256,uint256,uint256)
+          handler: withdraw
+        - event: PoolUpdated()
+          handler: updatePool

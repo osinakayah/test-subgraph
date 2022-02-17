@@ -5,6 +5,16 @@
         "internalType": "address",
         "name": "_money",
         "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_goldenTicket",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_goldenTicketID",
+        "type": "uint256"
       }
     ],
     "stateMutability": "nonpayable",
@@ -283,6 +293,32 @@
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "goldenTicketID",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "goldenTicketNFT",
+    "outputs": [
+      {
+        "internalType": "contract IERC1155",
+        "name": "",
+        "type": "address"
       }
     ],
     "stateMutability": "view",
