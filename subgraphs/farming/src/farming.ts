@@ -53,6 +53,7 @@ export function getFarming(block: ethereum.Block): Farming {
     farming.depositPeriod = contract.depositPeriod()
     farming.globalRoundId = contract.globalRoundId()
     farming.rewards = []
+    farming.availableRewards = BIG_INT_ZERO
 
     // userInfo ...
     farming.poolCount = BIG_INT_ZERO
