@@ -129,6 +129,7 @@ function getHistory(block: ethereum.Block): History {
 }
 
 export function transfer(event: TransferEvent): void {
+
   // Convert to BigDecimal with 18 places, 1e18.
   const value = event.params.value.divDecimal(BIG_DECIMAL_1E18)
 
