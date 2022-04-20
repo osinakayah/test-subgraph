@@ -41,7 +41,7 @@
         "prepare:palm": "mustache ../../config/palm.json template.yaml > subgraph.yaml",
         "prepare:heco": "mustache ../../config/heco.json template.yaml > subgraph.yaml",
         "prepare:fuse": "mustache ../../config/fuse.json template.yaml > subgraph.yaml",
-        "deploy": "graph deploy --node https://api.thegraph.com/deploy/ osinakayah/exchange",
+        "deploy": "graph deploy --node https://api.thegraph.com/deploy/ hodlarchitect/exchange --access-token 0e74c2eb02f042458b9b1756f9e3e270",
         "all-deploy": "yarn prepare:ropsten && yarn codegen && yarn build && yarn deploy"
     }
 }

@@ -19,7 +19,7 @@
     "prepare:rinkeby": "mustache config/rinkeby.json template.yaml > subgraph.yaml",
     "prepare:ropsten": "mustache config/ropsten.json template.yaml > subgraph.yaml",
     "prepare:xdai": "mustache config/xdai.json template.yaml > subgraph.yaml",
-    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ osinakayah/lockup",
+    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ hodlarchitect/lockup --access-token 0e74c2eb02f042458b9b1756f9e3e270",
     "all-deploy": "yarn prepare:ropsten && yarn codegen && yarn build && yarn deploy"
   }
 }

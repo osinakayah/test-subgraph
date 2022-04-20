@@ -11,13 +11,13 @@
         "create-local": "graph create --node http://localhost:8020/ /sushiswap/sushiswap",
         "remove-local": "graph remove --node http://localhost:8020/ /sushiswap/sushiswap",
         "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 /sushiswap/sushiswap",
-        "deploy:ropsten": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ osinakayah/bar ./subgraph.yaml --access-token ",
+        "deploy:ropsten": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ hodlarchitect/bar ./subgraph.yaml --access-token 0e74c2eb02f042458b9b1756f9e3e270",
         "prepare:goerli": "mustache config/goerli.json template.yaml > subgraph.yaml",
         "prepare:kovan": "mustache config/kovan.json template.yaml > subgraph.yaml",
         "prepare:mainnet": "mustache config/mainnet.json template.yaml > subgraph.yaml",
         "prepare:rinkeby": "mustache config/rinkeby.json template.yaml > subgraph.yaml",
         "prepare:ropsten": "mustache config/ropsten.json template.yaml > subgraph.yaml",
-        "deploy": "graph deploy --node https://api.thegraph.com/deploy/ osinakayah/bar",
+        "deploy": "graph deploy --node https://api.thegraph.com/deploy/ hodlarchitect/bar --access-token 0e74c2eb02f042458b9b1756f9e3e270",
         "all-deploy": "yarn prepare:ropsten && yarn codegen && yarn build && yarn deploy"
     }
 }

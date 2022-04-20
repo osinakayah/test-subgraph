@@ -23,6 +23,8 @@ dataSources:
         - PoolHistory
         - User
       abis:
+        - name: Farm
+          file: ./config/abis/Farm.json
         - name: FarmFactory
           file: ./config/abis/FarmFactory.json
         - name: Factory
