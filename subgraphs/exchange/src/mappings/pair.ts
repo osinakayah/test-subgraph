@@ -23,6 +23,7 @@ import {
   updateTokenDayData
 } from '../enitites'
 import { findEthPerToken, getEthPrice } from '../pricing'
+import {getEthRate, setReserveETH} from "../defaultPrice";
 
 const BLACKLIST_EXCHANGE_VOLUME: string[] = [
   '0x9ea3b5b4ec044b70375236a281986106457b20ef' // DELTA
@@ -325,6 +326,7 @@ export function onSync(event: SyncEvent): void {
 
   pair.save()
 
+  setReserveETH();
   // update ETH price now that reserves could have changed
   const bundle = getBundle()
   // Pass the block so we can get accurate price data before migration
@@ -333,6 +335,13 @@ export function onSync(event: SyncEvent): void {
 
   token0.derivedETH = findEthPerToken(token0 as Token)
   token1.derivedETH = findEthPerToken(token1 as Token)
+
+   if (token0.derivedETH.equals(BIG_DECIMAL_ZERO)) {
+     // token0.derivedETH = getEthRate(Address.fromString(pair.token0))
+  }
+   if (token1.derivedETH.equals(BIG_DECIMAL_ZERO)) {
+     // token1.derivedETH = getEthRate(Address.fromString(pair.token1))
+   }
   token0.save()
   token1.save()
 
