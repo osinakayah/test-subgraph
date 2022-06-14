@@ -1,0 +1,30 @@
+{
+  "key": "bsc-testnet",
+  "network": "chapel",
+  "factory_address": "0x2AdfB5843F97e8d5416686f2eB4E6DC3481488c1",
+  "usdc_weth_pair": "0xD26Cafa1b8e85B97A15aE7412EbdA930337Be4cA",
+  "dai_weth_pair": "0x80AB0ECb908957A276C101C9484FB0a22b9D5E21",
+  "usdt_weth_pair": "0x26c261d14120f668172690D4f8b76cDFf46452bA",
+  "bentobox_address": "0xf5bce5077908a1b7370b9ae04adc565ebd643966",
+  "kashi_pair_medium_risk_master_address": "0x2cba6ab6574646badc84f0544d05059e57a5dc42",
+  "minimum_usd_threshold_new_pairs": "0",
+  "minimum_liquidity_threshold_eth": "0",
+  "sushi_address": "0x947950bcc74888a40ffa2593c5798f11fc9124c4",
+  "weth_address": "0x0d840469d56c0c1725d1a64da6a7e9e0143f4a10",
+  "native_address": "0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd",
+  "dai_address": "0x2b4eBD749C6aC2cD8d80FD8e2198E2360248eCc1",
+  "usdt_address": "0x7Bbba710C55E48E460BF72e1cc2E1a3A1CA9290b",
+  "usdc_address": "0x5A679055d1a1ac067F34b2e5109B4198DA0Ebf43",
+  "factory": {
+    "address": "0x2AdfB5843F97e8d5416686f2eB4E6DC3481488c1",
+    "startBlock": "17616225"
+  },
+  "whitelist": [
+    "0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd",
+    "0x0d840469d56c0c1725d1a64da6a7e9e0143f4a10",
+    "0x5A679055d1a1ac067F34b2e5109B4198DA0Ebf43",
+    "0x7Bbba710C55E48E460BF72e1cc2E1a3A1CA9290b",
+    "0x2b4eBD749C6aC2cD8d80FD8e2198E2360248eCc1",
+    "0xeD24FC36d5Ee211Ea25A80239Fb8C4Cfd80f12Ee"
+  ]
+}

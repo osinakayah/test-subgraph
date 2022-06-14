@@ -9,6 +9,7 @@
     "codegen": "true",
     "build": "true",
     "prepare:bsc": "mustache ../../config/bsc.json index.template.ts > index.ts",
+    "prepare:bsc-testnet": "mustache ../../config/bsc-testnet.json index.template.ts > index.ts",
     "prepare:fantom": "mustache ../../config/fantom.json index.template.ts > index.ts",
     "prepare:goerli": "mustache ../../config/goerli.json index.template.ts > index.ts",
     "prepare:kovan": "mustache ../../config/kovan.json index.template.ts > index.ts",

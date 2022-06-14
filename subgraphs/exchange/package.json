@@ -12,11 +12,12 @@
         "create-local": "graph create --node http://localhost:8020/ /sushiswap/sushiswap",
         "remove-local": "graph remove --node http://localhost:8020/ /sushiswap/sushiswap",
         "deploy-local": "graph deploy --node http://localhost:8020/ /sushiswap/sushiswap",
-        "deploy:ropsten": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ osinakayah/exchange ./subgraph.yaml --access-token",
+        "deploy:ropsten": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ hodlarchitect/exchange --access-token 0e74c2eb02f042458b9b1756f9e3e270",
         "deploy:mainnet": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ sushiswap/exchange subgraph.yaml",
         "deploy:fantom": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ sushiswap/fantom-exchange subgraph.yaml",
         "deploy:xdai": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ sushiswap/xdai-exchange subgraph.yaml",
-        "deploy:bsc": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ sushiswap/bsc-exchange subgraph.yaml",
+        "deploy:bsc": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ hodlarchitect/bsc-tnet-exchange subgraph.yaml --access-token 0e74c2eb02f042458b9b1756f9e3e270",
+        "deploy:bsc-testnet": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ hodlarchitect/bsc-tnet-exchange subgraph.yaml --access-token 0e74c2eb02f042458b9b1756f9e3e270",
         "deploy:okex": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ sushiswap/okex-exchange subgraph.yaml",
         "deploy:arbitrum": "graph deploy --product hosted-service matthewlilley/arbitrum-exchange",
         "deploy:fuse": "graph deploy --product hosted-service sushiswap/fuse-exchange",
@@ -26,6 +27,7 @@
         "deploy-studio:mainnet": "graph deploy --studio sushi---mainnet-exchange",
         "prepare:arbitrum": "mustache ../../config/arbitrum.json template.yaml > subgraph.yaml",
         "prepare:bsc": "mustache ../../config/bsc.json template.yaml > subgraph.yaml",
+        "prepare:bsc-testnet": "mustache ../../config/bsc-testnet.json template.yaml > subgraph.yaml",
         "prepare:fantom": "mustache ../../config/fantom.json template.yaml > subgraph.yaml",
         "prepare:goerli": "mustache ../../config/goerli.json template.yaml > subgraph.yaml",
         "prepare:kovan": "mustache ../../config/kovan.json template.yaml > subgraph.yaml",
@@ -42,6 +44,7 @@
         "prepare:heco": "mustache ../../config/heco.json template.yaml > subgraph.yaml",
         "prepare:fuse": "mustache ../../config/fuse.json template.yaml > subgraph.yaml",
         "deploy": "graph deploy --node https://api.thegraph.com/deploy/ hodlarchitect/exchange --access-token 0e74c2eb02f042458b9b1756f9e3e270",
-        "all-deploy": "yarn prepare:ropsten && yarn codegen && yarn build && yarn deploy"
+        "all-deploy-ropsten": "yarn prepare:ropsten && yarn codegen && yarn build && yarn deploy:ropsten",
+        "all-deploy-bsc-testnet": "yarn prepare:bsc-testnet && yarn codegen && yarn build && yarn deploy:bsc-testnet"
     }
 }
