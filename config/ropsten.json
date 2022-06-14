@@ -17,7 +17,7 @@
   "xmoney_weth_pair_address": "0x0000000000000000000000000000000000000000",
   "money_distributor_address": "0x69a97d0092a43880210aFAe4e4971eb4DcC58f13",
   "usdc_weth_pair": "0xfa94729ffac2a574a63410639d79ccc5f48a831e",
-  "dai_weth_pair": "0xabfba9e4e17e6b6a3c7979ef7045b7ef80336a9d",
+  "dai_weth_pair": "0xa7641741a30e40b365b43c97b9be6b89e91ebccf",
   "usdt_weth_pair": "0xdef1321eea011ee46c84a68f5f7bc2c4d6561e6c",
   "money_usdt_pair": "0x306b8ac6f134e942ef2a3ba4ff2d9d0c4bdfca40",
   "hodl_weth_usdt_pair_address": "0xdef1321eea011ee46c84a68f5f7bc2c4d6561e6c",
@@ -28,5 +28,13 @@
   "uniswap_money_dai_pair_address": "0x7465631eea59C80737d862DE5ACD8E7bDfa6d691",
   "usdc_address": "0x0D9C8723B343A8368BebE0B5E89273fF8D712e3C",
   "usdt_address": "0x110a13fc3efe6a245b50102d2d79b3e76125ae83",
-  "dai_address": "0xc2118d4d90b274016cb7a54c03ef52e6c537d957"
+  "dai_address": "0xc2118d4d90b274016cb7a54c03ef52e6c537d957",
+  "whitelist": [
+    "0xa3b45b73067fd2282aab67436747e9b310254ebd",
+    "0xc2118d4d90b274016cb7a54c03ef52e6c537d957",
+    "0x0d9c8723b343a8368bebe0b5e89273ff8d712e3c",
+    "0x110a13fc3efe6a245b50102d2d79b3e76125ae83",
+    "0xe366ecf71a1a3c57a79f58cd6295437ee9b9b71d",
+    "0x212e4ff4f9003ef018632a288cbf4bb92962b3b1"
+  ]
 }
