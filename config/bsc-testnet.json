@@ -5,7 +5,7 @@
   "money_usdt_pair_address": "0xD52Bcf6E8FcDc7da43Ce13E17c936f674c705004",
   "money_usdt_pair": "0xD52Bcf6E8FcDc7da43Ce13E17c936f674c705004",
   "farming_address": "0x816822D1AAfD3186873c702a96213fd41884BA38",
-  "money_address": "0x10D25a596f4B7CA57869A6f6ccCbd5975847aC4C",
+  "money_address": "0x6E95EF4d4026ceb7d769C52c2A3318240d9aD2Ec",
   "staking_address": "0xA7E18a61b54D6eB00B1e7425BE0137bAe21FFFfF",
   "factory_address": "0x2AdfB5843F97e8d5416686f2eB4E6DC3481488c1",
   "usdc_weth_pair": "0xD26Cafa1b8e85B97A15aE7412EbdA930337Be4cA",
@@ -22,6 +22,7 @@
   "dai_address": "0x2b4eBD749C6aC2cD8d80FD8e2198E2360248eCc1",
   "usdt_address": "0x7Bbba710C55E48E460BF72e1cc2E1a3A1CA9290b",
   "usdc_address": "0x5A679055d1a1ac067F34b2e5109B4198DA0Ebf43",
+  "money_addressmoney_address": "0x6E95EF4d4026ceb7d769C52c2A3318240d9aD2Ec",
   "factory": {
     "address": "0x2AdfB5843F97e8d5416686f2eB4E6DC3481488c1",
     "startBlock": "17616225"
