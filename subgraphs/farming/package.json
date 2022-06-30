@@ -8,6 +8,7 @@
         "build": "graph build subgraph.yaml",
         "sdeploy": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ sushiswap/master-chef subgraph.yaml",
         "deploy:ropsten": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ hodl-engineer/farm-factory-1 ./subgraph.yaml --access-token 31c0e0056e4647a69d41b84949200066",
+        "deploy:bsc-testnet": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ hodlarchitect/bsc-tnet-masterchef ./subgraph.yaml --access-token 0e74c2eb02f042458b9b1756f9e3e270",
         "deploy-studio": "graph deploy --studio sushi---masterchef",
         "create-local": "graph create --node http://localhost:8020/ /sushiswap/sushiswap",
         "remove-local": "graph remove --node http://localhost:8020/ /sushiswap/sushiswap",
@@ -20,9 +21,11 @@
         "prepare:matic": "mustache config/matic.json template.yaml > subgraph.yaml",
         "prepare:rinkeby": "mustache config/rinkeby.json template.yaml > subgraph.yaml",
         "prepare:ropsten": "mustache config/ropsten.json template.yaml > subgraph.yaml",
+        "prepare:bsc-testnet": "mustache config/bsc-testnet.json template.yaml > subgraph.yaml",
         "prepare:xdai": "mustache config/xdai.json template.yaml > subgraph.yaml",
         "deploy": "graph deploy --node https://api.thegraph.com/deploy/ hodlarchitect/masterchef --access-token 0e74c2eb02f042458b9b1756f9e3e270",
         "all-deploy": "yarn prepare:ropsten && yarn codegen && yarn build && yarn deploy",
+        "all-deploy-bsc-testnet": "yarn prepare:bsc-testnet && yarn codegen && yarn build && yarn deploy:bsc-testnet",
         "test": "graph test tests/"
     }
 }

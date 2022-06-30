@@ -17,7 +17,7 @@
         "deploy:fantom": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ sushiswap/fantom-exchange subgraph.yaml",
         "deploy:xdai": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ sushiswap/xdai-exchange subgraph.yaml",
         "deploy:bsc": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ hodlarchitect/bsc-tnet-exchange subgraph.yaml --access-token 0e74c2eb02f042458b9b1756f9e3e270",
-        "deploy:bsc-testnet": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ hodlarchitect/bsc-tnet-exchange subgraph.yaml --access-token 0e74c2eb02f042458b9b1756f9e3e270",
+        "deploy:bsc-testnet": "graph deploy  --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ hodlarchitect/bsc-tnet-exchange subgraph.yaml --access-token 0e74c2eb02f042458b9b1756f9e3e270",
         "deploy:okex": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ sushiswap/okex-exchange subgraph.yaml",
         "deploy:arbitrum": "graph deploy --product hosted-service matthewlilley/arbitrum-exchange",
         "deploy:fuse": "graph deploy --product hosted-service sushiswap/fuse-exchange",

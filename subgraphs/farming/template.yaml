@@ -36,8 +36,6 @@ dataSources:
       eventHandlers:
         - event: OwnershipTransferred(indexed address,indexed address)
           handler: ownershipTransferred
-        - event: NewPool(indexed address,address,uint256,uint16)
-          handler: add
         - event: UpdatePool(indexed address,uint256,uint16)
           handler: set
       callHandlers:

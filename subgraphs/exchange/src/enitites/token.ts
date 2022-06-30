@@ -69,11 +69,26 @@ export function getSymbol(address: Address): string {
     return 'CELO'
   }
 
+  //TODO will remove start
+  if (address.toHex() == '0x0d840469d56c0c1725d1a64da6a7e9e0143f4a10') {
+    return 'WETH'
+  }
+  if (address.toHex() == '0x2b4ebd749c6ac2cd8d80fd8e2198e2360248ecc1') {
+    return 'DAI'
+  }
+  if (address.toHex() == '0x7bbba710c55e48e460bf72e1cc2e1a3a1ca9290b') {
+    return 'USDT'
+  }
+  if (address.toHex() == '0xed24fc36d5ee211ea25a80239fb8c4cfd80f12ee') {
+    return 'BUSD'
+  }
+  //TODO will remove end
+
   const contract = ERC20.bind(address)
   const contractSymbolBytes = ERC20SymbolBytes.bind(address)
 
   // try types string and bytes32 for symbol
-  let symbolValue = 'unknown'
+  let symbolValue = 'MOCK'
   const symbolResult = contract.try_symbol()
   if (symbolResult.reverted) {
     const symbolResultBytes = contractSymbolBytes.try_symbol()
@@ -118,11 +133,27 @@ export function getName(address: Address): string {
     return 'Celo Native Asset'
   }
 
+  // TODO will remove start
+
+  if (address.toHex() == '0x0d840469d56c0c1725d1a64da6a7e9e0143f4a10') {
+    return 'Wrapped Ether'
+  }
+  if (address.toHex() == '0x2b4ebd749c6ac2cd8d80fd8e2198e2360248ecc1') {
+    return 'Binance-Peg Dai Token'
+  }
+  if (address.toHex() == '0x7bbba710c55e48e460bf72e1cc2e1a3a1ca9290b') {
+    return 'Binance-Peg USDT Token'
+  }
+  if (address.toHex() == '0xed24fc36d5ee211ea25a80239fb8c4cfd80f12ee') {
+    return 'Binance USD'
+  }
+ // TODO will remove end
+
   const contract = ERC20.bind(address)
   const contractNameBytes = ERC20NameBytes.bind(address)
 
   // try types string and bytes32 for name
-  let nameValue = 'unknown'
+  let nameValue = 'Mock Name'
   const nameResult = contract.try_name()
   if (nameResult.reverted) {
     const nameResultBytes = contractNameBytes.try_name()
@@ -143,9 +174,13 @@ export function getTotalSupply(address: Address): BigInt {
   if (dataSource.network() == 'fuse' && address.toHexString() == '0x0be9e53fd7edac9f859882afdda116645287c629') {
     return BigInt.fromI32(1)
   }
+  // const tempName = hardcodedTotalSupply(address)
+  // if (tempName != null) {
+  //   return  tempName
+  // }
 
   const contract = ERC20.bind(address)
-  let totalSupplyValue = null
+  let totalSupplyValue = 1
   const totalSupplyResult = contract.try_totalSupply()
   if (!totalSupplyResult.reverted) {
     totalSupplyValue = totalSupplyResult as i32
@@ -158,11 +193,15 @@ export function getDecimals(address: Address): BigInt {
   if (address.toHex() == '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9') {
     return BigInt.fromI32(18)
   }
+  // const tempName = hardcodedDecimals(address)
+  // if (tempName != null) {
+  //   return  tempName
+  // }
 
   const contract = ERC20.bind(address)
 
   // try types uint8 for decimals
-  let decimalValue = null
+  let decimalValue = 18
 
   const decimalResult = contract.try_decimals()
 

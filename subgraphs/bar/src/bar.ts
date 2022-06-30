@@ -151,6 +151,11 @@ export function transfer(event: TransferEvent): void {
   bar.moneyStaked = MoneyTokenContract.bind(MONEY_TOKEN_ADDRESS)
     .balanceOf(MONEY_BAR_ADDRESS)
     .divDecimal(BIG_DECIMAL_1E18)
+
+  if (bar.totalSupply.le(BIG_DECIMAL_ZERO)){
+    return;
+  }
+  log.error('total supply {}', [bar.totalSupply.toString()])
   bar.ratio = bar.moneyStaked.div(bar.totalSupply)
 
   const what = value.times(bar.ratio)
