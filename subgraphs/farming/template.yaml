@@ -23,8 +23,6 @@ dataSources:
         - PoolHistory
         - User
       abis:
-        - name: Farm
-          file: ./config/abis/Farm.json
         - name: FarmFactory
           file: ./config/abis/FarmFactory.json
         - name: Factory
@@ -33,9 +31,13 @@ dataSources:
           file: ./config/abis/Core.json
         - name: ERC20
           file: ./config/abis/ERC20.json
+        - name: Farm
+          file: ./config/abis/Farm.json
       eventHandlers:
         - event: OwnershipTransferred(indexed address,indexed address)
           handler: ownershipTransferred
+        - event: NewPool(indexed address,address,uint256,uint16)
+          handler: add
         - event: UpdatePool(indexed address,uint256,uint16)
           handler: set
       callHandlers:

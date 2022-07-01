@@ -28,7 +28,7 @@ export const LOCKUP_POOL_NUMBER = BigInt.fromI32(29)
 
 export const LOCKUP_BLOCK_NUMBER = BigInt.fromI32(11432276)
 
-export const FARMING_START_BLOCK = BigInt.fromI32(20589742)
+export const FARMING_START_BLOCK = BigInt.fromI32(20589743)
 
 export const UNISWAP_MONEY_ETH_PAIR_FIRST_LIQUDITY_BLOCK = BigInt.fromI32(11432276)
 
