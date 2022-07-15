@@ -22,7 +22,7 @@
         "prepare:bsc-testnet": "mustache config/bsc-testnet.json template.yaml > subgraph.yaml",
         "deploy:bsc-testnet": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ hodlarchitect/bsc-tnet-bar ./subgraph.yaml --access-token 0e74c2eb02f042458b9b1756f9e3e270",
         "create-local": "graph create --node https://test-graph.hodlverse.com/graph/ hodlarchitect/bsc-tnet-bar",
-        "deploy-local": "yarn create-local && graph deploy --node https://test-graph.hodlverse.com/graph/  hodlarchitect/bsc-tnet-bar",
+        "deploy-local": "yarn create-local && graph deploy --node https://test-graph.hodlverse.com/graph/ --ipfs https://test-graph.hodlverse.com/ipfs/ hodlarchitect/bsc-tnet-bar",
         "all-deploy-bsc-testnet": "yarn prepare:bsc-testnet && yarn codegen && yarn build && yarn deploy-local"
     }
 }
