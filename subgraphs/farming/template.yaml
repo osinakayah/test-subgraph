@@ -40,17 +40,6 @@ dataSources:
           handler: add
         - event: UpdatePool(indexed address,uint256,uint16)
           handler: set
-      callHandlers:
-        - function: transferOwnership(address)
-          handler: transferOwnership
-        - function: setReserveAddress(address)
-          handler: setReserveAddress
-        - function: updateReserveDistributionSchedule(uint256)
-          handler: updateReserveDistributionSchedule
-        - function: setFeeAddress(address)
-          handler: setFeeAddress
-        - function: pullRewards()
-          handler: pullRewards
       file: ./src/farming.ts
 templates:
   - kind: ethereum/contract
