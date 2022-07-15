@@ -45,8 +45,8 @@
         "prepare:fuse": "mustache ../../config/fuse.json template.yaml > subgraph.yaml",
         "deploy": "graph deploy --node https://api.thegraph.com/deploy/ hodlarchitect/exchange --access-token 0e74c2eb02f042458b9b1756f9e3e270",
         "all-deploy-ropsten": "yarn prepare:ropsten && yarn codegen && yarn build && yarn deploy:ropsten",
-        "create-local": "graph create --node https://test-graph.hodlverse.com/graph/ hodlarchitect/bsc-tnet-exchange",
-        "deploy-local": "yarn create-local && graph deploy --node https://test-graph.hodlverse.com/graph/ --ipfs https://test-graph.hodlverse.com/ipfs/ hodlarchitect/bsc-tnet-exchange",
+        "create-local": "graph create --node http://144.126.213.213:8020/ hodlarchitect/bsc-tnet-exchange",
+        "deploy-local": "yarn create-local && graph deploy --node http://144.126.213.213:8020/ --ipfs http://144.126.213.213:5001/ hodlarchitect/bsc-tnet-exchange",
         "all-deploy-bsc-testnet": "yarn prepare:bsc-testnet && yarn codegen && yarn build && yarn deploy-local"
     }
 }
