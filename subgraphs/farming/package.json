@@ -6,13 +6,10 @@
     "scripts": {
         "codegen": "graph codegen subgraph.yaml",
         "build": "graph build subgraph.yaml",
-        "sdeploy": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ sushiswap/master-chef subgraph.yaml",
         "deploy:ropsten": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ hodl-engineer/farm-factory-1 ./subgraph.yaml --access-token 31c0e0056e4647a69d41b84949200066",
         "deploy:bsc-testnet": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ hodlarchitect/bsc-tnet-masterchef ./subgraph.yaml --access-token 0e74c2eb02f042458b9b1756f9e3e270",
         "deploy-studio": "graph deploy --studio sushi---masterchef",
-        "create-local": "graph create --node http://localhost:8020/ /sushiswap/sushiswap",
         "remove-local": "graph remove --node http://localhost:8020/ /sushiswap/sushiswap",
-        "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001",
         "prepare:bsc": "mustache config/bsc.json template.yaml > subgraph.yaml",
         "prepare:fantom": "mustache config/fantom.json template.yaml > subgraph.yaml",
         "prepare:goerli": "mustache config/goerli.json template.yaml > subgraph.yaml",
@@ -24,8 +21,12 @@
         "prepare:bsc-testnet": "mustache config/bsc-testnet.json template.yaml > subgraph.yaml",
         "prepare:xdai": "mustache config/xdai.json template.yaml > subgraph.yaml",
         "deploy": "graph deploy --node https://api.thegraph.com/deploy/ hodlarchitect/masterchef --access-token 0e74c2eb02f042458b9b1756f9e3e270",
+
+
         "all-deploy": "yarn prepare:ropsten && yarn codegen && yarn build && yarn deploy",
-        "all-deploy-bsc-testnet": "yarn prepare:bsc-testnet && yarn codegen && yarn build && yarn deploy:bsc-testnet",
+        "create-local": "graph create --node http://144.126.213.213:8020/ hodlarchitect/bsc-tnet-masterchef",
+        "deploy-local": "yarn create-local && graph deploy --node http://144.126.213.213:8020/ --ipfs http://144.126.213.213:5001/  hodlarchitect/bsc-tnet-masterchef",
+        "all-deploy-bsc-testnet": "yarn prepare:bsc-testnet && yarn codegen && yarn build && yarn deploy-local",
         "test": "graph test tests/"
     }
 }

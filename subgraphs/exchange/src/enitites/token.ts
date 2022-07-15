@@ -69,20 +69,20 @@ export function getSymbol(address: Address): string {
     return 'CELO'
   }
 
-  //TODO will remove start
-  if (address.toHex() == '0x0d840469d56c0c1725d1a64da6a7e9e0143f4a10') {
-    return 'WETH'
-  }
-  if (address.toHex() == '0x2b4ebd749c6ac2cd8d80fd8e2198e2360248ecc1') {
-    return 'DAI'
-  }
-  if (address.toHex() == '0x7bbba710c55e48e460bf72e1cc2e1a3a1ca9290b') {
-    return 'USDT'
-  }
-  if (address.toHex() == '0xed24fc36d5ee211ea25a80239fb8c4cfd80f12ee') {
-    return 'BUSD'
-  }
-  //TODO will remove end
+  // //TODO will remove start
+  // if (address.toHex() == '0x0d840469d56c0c1725d1a64da6a7e9e0143f4a10') {
+  //   return 'WETH'
+  // }
+  // if (address.toHex() == '0x2b4ebd749c6ac2cd8d80fd8e2198e2360248ecc1') {
+  //   return 'DAI'
+  // }
+  // if (address.toHex() == '0x7bbba710c55e48e460bf72e1cc2e1a3a1ca9290b') {
+  //   return 'USDT'
+  // }
+  // if (address.toHex() == '0xed24fc36d5ee211ea25a80239fb8c4cfd80f12ee') {
+  //   return 'BUSD'
+  // }
+  // //TODO will remove end
 
   const contract = ERC20.bind(address)
   const contractSymbolBytes = ERC20SymbolBytes.bind(address)
@@ -133,21 +133,21 @@ export function getName(address: Address): string {
     return 'Celo Native Asset'
   }
 
-  // TODO will remove start
-
-  if (address.toHex() == '0x0d840469d56c0c1725d1a64da6a7e9e0143f4a10') {
-    return 'Wrapped Ether'
-  }
-  if (address.toHex() == '0x2b4ebd749c6ac2cd8d80fd8e2198e2360248ecc1') {
-    return 'Binance-Peg Dai Token'
-  }
-  if (address.toHex() == '0x7bbba710c55e48e460bf72e1cc2e1a3a1ca9290b') {
-    return 'Binance-Peg USDT Token'
-  }
-  if (address.toHex() == '0xed24fc36d5ee211ea25a80239fb8c4cfd80f12ee') {
-    return 'Binance USD'
-  }
- // TODO will remove end
+ //  // TODO will remove start
+ //
+ //  if (address.toHex() == '0x0d840469d56c0c1725d1a64da6a7e9e0143f4a10') {
+ //    return 'Wrapped Ether'
+ //  }
+ //  if (address.toHex() == '0x2b4ebd749c6ac2cd8d80fd8e2198e2360248ecc1') {
+ //    return 'Binance-Peg Dai Token'
+ //  }
+ //  if (address.toHex() == '0x7bbba710c55e48e460bf72e1cc2e1a3a1ca9290b') {
+ //    return 'Binance-Peg USDT Token'
+ //  }
+ //  if (address.toHex() == '0xed24fc36d5ee211ea25a80239fb8c4cfd80f12ee') {
+ //    return 'Binance USD'
+ //  }
+ // // TODO will remove end
 
   const contract = ERC20.bind(address)
   const contractNameBytes = ERC20NameBytes.bind(address)

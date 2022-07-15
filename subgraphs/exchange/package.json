@@ -9,9 +9,9 @@
     "scripts": {
         "codegen": "graph codegen subgraph.yaml",
         "build": "graph build subgraph.yaml",
-        "create-local": "graph create --node http://localhost:8020/ /sushiswap/sushiswap",
+        "create-local": "graph create --node http://144.126.213.213:8020 hodlarchitect/bsc-tnet-exchange",
         "remove-local": "graph remove --node http://localhost:8020/ /sushiswap/sushiswap",
-        "deploy-local": "graph deploy --node http://localhost:8020/ /sushiswap/sushiswap",
+        "deploy-local": "yarn create-local && graph deploy --node https://test-graph.hodlverse.com/graph  hodlarchitect/bsc-tnet-exchange",
         "deploy:ropsten": "graph deploy --product hosted-service --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ hodlarchitect/exchange --access-token 0e74c2eb02f042458b9b1756f9e3e270",
         "deploy:mainnet": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ sushiswap/exchange subgraph.yaml",
         "deploy:fantom": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ sushiswap/fantom-exchange subgraph.yaml",
@@ -45,6 +45,6 @@
         "prepare:fuse": "mustache ../../config/fuse.json template.yaml > subgraph.yaml",
         "deploy": "graph deploy --node https://api.thegraph.com/deploy/ hodlarchitect/exchange --access-token 0e74c2eb02f042458b9b1756f9e3e270",
         "all-deploy-ropsten": "yarn prepare:ropsten && yarn codegen && yarn build && yarn deploy:ropsten",
-        "all-deploy-bsc-testnet": "yarn prepare:bsc-testnet && yarn codegen && yarn build && yarn deploy:bsc-testnet"
+        "all-deploy-bsc-testnet": "yarn prepare:bsc-testnet && yarn codegen && yarn build && yarn deploy-local"
     }
 }
